@@ -1,0 +1,1451 @@
+[
+  {
+    "framework_abbreviation": "NYDFS 500",
+    "control_id": "500.02(a)",
+    "title": "Cybersecurity Program",
+    "description": "Each Covered Entity shall maintain a cybersecurity program designed to protect the confidentiality, integrity and availability of the Covered Entity's Information Systems.",
+    "control_family": "Governance",
+    "priority": "Critical",
+    "implementation_guidance": "Develop and document a comprehensive cybersecurity program that addresses all aspects of information security. The program should be based on risk assessment and aligned with business objectives."
+  },
+  {
+    "framework_abbreviation": "NYDFS 500",
+    "control_id": "500.02(b)(1)",
+    "title": "Information Security Policy",
+    "description": "The cybersecurity program shall be based on the Covered Entity's Risk Assessment and designed to identify and assess internal and external cybersecurity risks.",
+    "control_family": "Governance",
+    "priority": "Critical",
+    "implementation_guidance": "Create documented information security policies that are approved by senior management and communicated to all employees. Review and update policies at least annually."
+  },
+  {
+    "framework_abbreviation": "NYDFS 500",
+    "control_id": "500.03",
+    "title": "Cybersecurity Policy",
+    "description": "Each Covered Entity shall implement and maintain a written policy or policies, approved by a Senior Officer or the Covered Entity's board of directors.",
+    "control_family": "Governance",
+    "priority": "Critical",
+    "implementation_guidance": "Document cybersecurity policies covering information security, data governance, asset inventory, access controls, business continuity, systems operations, vendor management, and incident response."
+  },
+  {
+    "framework_abbreviation": "NYDFS 500",
+    "control_id": "500.04(a)",
+    "title": "Chief Information Security Officer",
+    "description": "Each Covered Entity shall designate a qualified individual responsible for overseeing and implementing the Covered Entity's cybersecurity program and enforcing its cybersecurity policy.",
+    "control_family": "Governance",
+    "priority": "Critical",
+    "implementation_guidance": "Appoint a CISO or equivalent role with appropriate authority, qualifications, and resources. The CISO should report regularly to the board or senior management."
+  },
+  {
+    "framework_abbreviation": "NYDFS 500",
+    "control_id": "500.04(b)",
+    "title": "CISO Reporting",
+    "description": "The CISO shall report in writing at least annually to the Covered Entity's board of directors or equivalent governing body.",
+    "control_family": "Governance",
+    "priority": "High",
+    "implementation_guidance": "Prepare and deliver annual written reports to the board covering cybersecurity program status, material risks, and remediation efforts."
+  },
+  {
+    "framework_abbreviation": "NYDFS 500",
+    "control_id": "500.05",
+    "title": "Penetration Testing and Vulnerability Assessments",
+    "description": "The cybersecurity program shall include monitoring and testing, developed in accordance with the Covered Entity's Risk Assessment, designed to assess the effectiveness of the cybersecurity program.",
+    "control_family": "Vulnerability Management",
+    "priority": "High",
+    "implementation_guidance": "Conduct annual penetration testing and bi-annual vulnerability assessments. Address critical and high vulnerabilities within defined timeframes."
+  },
+  {
+    "framework_abbreviation": "NYDFS 500",
+    "control_id": "500.06",
+    "title": "Audit Trail",
+    "description": "Each Covered Entity shall securely maintain systems that, to the extent applicable and based on its Risk Assessment, include audit trails designed to detect and respond to Cybersecurity Events.",
+    "control_family": "Monitoring & Logging",
+    "priority": "High",
+    "implementation_guidance": "Implement comprehensive logging for all critical systems. Retain logs for at least 5 years for financial transactions and 3 years for other records. Ensure logs are tamper-evident."
+  },
+  {
+    "framework_abbreviation": "NYDFS 500",
+    "control_id": "500.07",
+    "title": "Access Privileges",
+    "description": "As part of its cybersecurity program, each Covered Entity shall limit user access privileges to Information Systems that provide access to Nonpublic Information.",
+    "control_family": "Access Control",
+    "priority": "High",
+    "implementation_guidance": "Implement least privilege access controls. Review access rights periodically and remove access promptly upon role change or termination."
+  },
+  {
+    "framework_abbreviation": "NYDFS 500",
+    "control_id": "500.08",
+    "title": "Application Security",
+    "description": "Each Covered Entity's cybersecurity program shall include written procedures, guidelines and standards designed to ensure the use of secure development practices for in-house developed applications.",
+    "control_family": "Application Security",
+    "priority": "High",
+    "implementation_guidance": "Establish secure SDLC practices including code reviews, security testing, and vulnerability remediation. Evaluate security of third-party applications before deployment."
+  },
+  {
+    "framework_abbreviation": "NYDFS 500",
+    "control_id": "500.09",
+    "title": "Risk Assessment",
+    "description": "Each Covered Entity shall conduct a periodic Risk Assessment of the Covered Entity's Information Systems sufficient to inform the design of the cybersecurity program.",
+    "control_family": "Risk Management",
+    "priority": "Critical",
+    "implementation_guidance": "Conduct comprehensive risk assessments at least annually and when significant changes occur. Document risks, likelihood, impact, and mitigation strategies."
+  },
+  {
+    "framework_abbreviation": "NYDFS 500",
+    "control_id": "500.10",
+    "title": "Cybersecurity Personnel and Intelligence",
+    "description": "Each Covered Entity shall employ cybersecurity personnel sufficient to manage the Covered Entity's cybersecurity risks and to perform the core cybersecurity functions.",
+    "control_family": "Governance",
+    "priority": "High",
+    "implementation_guidance": "Ensure adequate staffing for cybersecurity operations. Provide ongoing training and utilize threat intelligence to stay informed of emerging threats."
+  },
+  {
+    "framework_abbreviation": "NYDFS 500",
+    "control_id": "500.11",
+    "title": "Third Party Service Provider Security Policy",
+    "description": "Each Covered Entity shall implement written policies and procedures designed to ensure the security of Information Systems and Nonpublic Information that are accessible to, or held by, Third Party Service Providers.",
+    "control_family": "Third-Party Risk",
+    "priority": "High",
+    "implementation_guidance": "Develop vendor security assessment procedures. Require contractual security obligations and conduct periodic reviews of third-party security practices."
+  },
+  {
+    "framework_abbreviation": "NYDFS 500",
+    "control_id": "500.12",
+    "title": "Multi-Factor Authentication",
+    "description": "Each Covered Entity shall use effective controls, which may include multi-factor authentication or risk-based authentication, to protect against unauthorized access to Nonpublic Information or Information Systems.",
+    "control_family": "Access Control",
+    "priority": "Critical",
+    "implementation_guidance": "Implement MFA for all privileged access, remote access, and access to nonpublic information. Consider risk-based authentication for additional scenarios."
+  },
+  {
+    "framework_abbreviation": "NYDFS 500",
+    "control_id": "500.13",
+    "title": "Limitations on Data Retention",
+    "description": "Each Covered Entity shall include policies and procedures for the secure disposal on a periodic basis of any Nonpublic Information that is no longer necessary for business operations.",
+    "control_family": "Data Protection",
+    "priority": "Medium",
+    "implementation_guidance": "Establish data retention schedules and secure disposal procedures. Regularly review and purge data that is no longer required for business or regulatory purposes."
+  },
+  {
+    "framework_abbreviation": "NYDFS 500",
+    "control_id": "500.14(a)",
+    "title": "Training and Monitoring",
+    "description": "Each Covered Entity shall implement risk-based policies, procedures and controls designed to monitor the activity of Authorized Users and detect unauthorized access.",
+    "control_family": "Monitoring & Logging",
+    "priority": "High",
+    "implementation_guidance": "Deploy user activity monitoring solutions. Establish baselines and alerts for anomalous behavior. Investigate and respond to detected anomalies."
+  },
+  {
+    "framework_abbreviation": "NYDFS 500",
+    "control_id": "500.14(b)",
+    "title": "Cybersecurity Awareness Training",
+    "description": "Each Covered Entity shall provide regular cybersecurity awareness training for all personnel that is updated to reflect risks identified by the Covered Entity in its Risk Assessment.",
+    "control_family": "Awareness & Training",
+    "priority": "High",
+    "implementation_guidance": "Conduct annual security awareness training for all employees. Include phishing simulations and role-specific training for personnel with elevated access."
+  },
+  {
+    "framework_abbreviation": "NYDFS 500",
+    "control_id": "500.15",
+    "title": "Encryption of Nonpublic Information",
+    "description": "Each Covered Entity shall implement controls, including encryption, to protect Nonpublic Information held or transmitted by the Covered Entity both in transit and at rest.",
+    "control_family": "Encryption",
+    "priority": "Critical",
+    "implementation_guidance": "Encrypt all nonpublic information at rest and in transit using industry-standard algorithms (AES-256, TLS 1.2+). Document compensating controls if encryption is not feasible."
+  },
+  {
+    "framework_abbreviation": "NYDFS 500",
+    "control_id": "500.16",
+    "title": "Incident Response Plan",
+    "description": "Each Covered Entity shall establish a written incident response plan designed to promptly respond to, and recover from, any Cybersecurity Event materially affecting the confidentiality, integrity or availability of the Covered Entity's Information Systems.",
+    "control_family": "Incident Response",
+    "priority": "Critical",
+    "implementation_guidance": "Document incident response procedures including roles, communication plans, containment strategies, and recovery procedures. Test the plan annually."
+  },
+  {
+    "framework_abbreviation": "NYDFS 500",
+    "control_id": "500.17",
+    "title": "Notices to Superintendent",
+    "description": "Each Covered Entity shall notify the superintendent as promptly as possible but in no event later than 72 hours from a determination that a Cybersecurity Event has occurred.",
+    "control_family": "Incident Response",
+    "priority": "Critical",
+    "implementation_guidance": "Establish procedures for timely incident notification. Maintain contact information for regulatory reporting. Document all reportable events and notifications."
+  },
+  {
+    "framework_abbreviation": "NYDFS 500",
+    "control_id": "500.22",
+    "title": "Asset Inventory",
+    "description": "Each Covered Entity shall maintain a complete, accurate, and documented asset inventory, including a listing of all Information Systems.",
+    "control_family": "Asset Management",
+    "priority": "High",
+    "implementation_guidance": "Maintain an up-to-date inventory of all hardware, software, and data assets. Include classification, ownership, and location information."
+  },
+  {
+    "framework_abbreviation": "NYDFS 500",
+    "control_id": "500.23",
+    "title": "Business Continuity and Disaster Recovery",
+    "description": "Each Covered Entity shall establish and maintain a business continuity and disaster recovery plan reasonably designed to ensure the availability and functionality of the Covered Entity's Information Systems.",
+    "control_family": "Business Continuity",
+    "priority": "High",
+    "implementation_guidance": "Develop and test BC/DR plans annually. Define RTO/RPO objectives and ensure backup systems can meet these requirements."
+  },
+  {
+    "framework_abbreviation": "ISO 27001",
+    "control_id": "A.5.1",
+    "title": "Policies for Information Security",
+    "description": "A set of policies for information security shall be defined, approved by management, published and communicated to employees and relevant external parties.",
+    "control_family": "Governance",
+    "priority": "Critical",
+    "implementation_guidance": "Develop comprehensive information security policies aligned with business objectives. Ensure policies are approved by top management and communicated to all stakeholders."
+  },
+  {
+    "framework_abbreviation": "ISO 27001",
+    "control_id": "A.5.2",
+    "title": "Information Security Roles and Responsibilities",
+    "description": "All information security responsibilities shall be defined and allocated.",
+    "control_family": "Governance",
+    "priority": "High",
+    "implementation_guidance": "Define and document security roles and responsibilities. Ensure segregation of duties where appropriate. Communicate responsibilities to relevant personnel."
+  },
+  {
+    "framework_abbreviation": "ISO 27001",
+    "control_id": "A.5.3",
+    "title": "Segregation of Duties",
+    "description": "Conflicting duties and areas of responsibility shall be segregated to reduce opportunities for unauthorized or unintentional modification or misuse of the organization's assets.",
+    "control_family": "Access Control",
+    "priority": "High",
+    "implementation_guidance": "Identify and separate conflicting duties. Implement compensating controls where segregation is not feasible. Review access regularly."
+  },
+  {
+    "framework_abbreviation": "ISO 27001",
+    "control_id": "A.5.15",
+    "title": "Access Control",
+    "description": "Rules to control physical and logical access to information and other associated assets shall be established and implemented based on business and information security requirements.",
+    "control_family": "Access Control",
+    "priority": "Critical",
+    "implementation_guidance": "Develop access control policy based on business needs. Implement role-based access control with principle of least privilege."
+  },
+  {
+    "framework_abbreviation": "ISO 27001",
+    "control_id": "A.5.16",
+    "title": "Identity Management",
+    "description": "The full lifecycle of identities shall be managed.",
+    "control_family": "Access Control",
+    "priority": "High",
+    "implementation_guidance": "Implement identity management processes covering provisioning, modifications, and deprovisioning. Conduct regular access reviews."
+  },
+  {
+    "framework_abbreviation": "ISO 27001",
+    "control_id": "A.5.17",
+    "title": "Authentication Information",
+    "description": "Allocation and management of authentication information shall be controlled by a management process.",
+    "control_family": "Access Control",
+    "priority": "High",
+    "implementation_guidance": "Implement strong password policies. Use MFA where appropriate. Secure storage and transmission of credentials."
+  },
+  {
+    "framework_abbreviation": "ISO 27001",
+    "control_id": "A.5.23",
+    "title": "Information Security for Use of Cloud Services",
+    "description": "Processes for acquisition, use, management and exit from cloud services shall be established in accordance with the organization's information security requirements.",
+    "control_family": "Third-Party Risk",
+    "priority": "High",
+    "implementation_guidance": "Assess cloud service providers before engagement. Define security requirements and monitor compliance. Plan for service transitions."
+  },
+  {
+    "framework_abbreviation": "ISO 27001",
+    "control_id": "A.5.24",
+    "title": "Information Security Incident Management Planning",
+    "description": "The organization shall plan and prepare for managing information security incidents by defining, establishing and communicating information security incident management processes, roles and responsibilities.",
+    "control_family": "Incident Response",
+    "priority": "Critical",
+    "implementation_guidance": "Develop incident response plan with defined roles. Establish communication procedures. Train incident response team."
+  },
+  {
+    "framework_abbreviation": "ISO 27001",
+    "control_id": "A.5.26",
+    "title": "Response to Information Security Incidents",
+    "description": "Information security incidents shall be responded to in accordance with the documented procedures.",
+    "control_family": "Incident Response",
+    "priority": "Critical",
+    "implementation_guidance": "Follow documented procedures for incident response. Contain, eradicate, and recover from incidents. Document all actions taken."
+  },
+  {
+    "framework_abbreviation": "ISO 27001",
+    "control_id": "A.5.29",
+    "title": "Information Security During Disruption",
+    "description": "The organization shall plan how to maintain information security at an appropriate level during disruption.",
+    "control_family": "Business Continuity",
+    "priority": "High",
+    "implementation_guidance": "Integrate security requirements into business continuity plans. Ensure security controls remain effective during disruptions."
+  },
+  {
+    "framework_abbreviation": "ISO 27001",
+    "control_id": "A.5.30",
+    "title": "ICT Readiness for Business Continuity",
+    "description": "ICT readiness shall be planned, implemented, maintained and tested based on business continuity objectives and ICT continuity requirements.",
+    "control_family": "Business Continuity",
+    "priority": "High",
+    "implementation_guidance": "Define recovery objectives. Implement redundancy and backup solutions. Test recovery procedures regularly."
+  },
+  {
+    "framework_abbreviation": "ISO 27001",
+    "control_id": "A.6.1",
+    "title": "Screening",
+    "description": "Background verification checks on all candidates for employment shall be carried out prior to joining the organization and on an ongoing basis.",
+    "control_family": "Human Resources",
+    "priority": "Medium",
+    "implementation_guidance": "Conduct background checks appropriate to the role. Consider ongoing screening for sensitive positions."
+  },
+  {
+    "framework_abbreviation": "ISO 27001",
+    "control_id": "A.6.3",
+    "title": "Information Security Awareness, Education and Training",
+    "description": "Personnel of the organization and relevant interested parties shall receive appropriate information security awareness, education and training and regular updates of the organization's information security policy.",
+    "control_family": "Awareness & Training",
+    "priority": "High",
+    "implementation_guidance": "Provide security awareness training to all employees. Include role-specific training. Track completion and update content regularly."
+  },
+  {
+    "framework_abbreviation": "ISO 27001",
+    "control_id": "A.7.1",
+    "title": "Physical Security Perimeters",
+    "description": "Security perimeters shall be defined and used to protect areas that contain information and other associated assets.",
+    "control_family": "Physical Security",
+    "priority": "High",
+    "implementation_guidance": "Define and implement physical security perimeters. Control entry points and monitor for unauthorized access."
+  },
+  {
+    "framework_abbreviation": "ISO 27001",
+    "control_id": "A.7.4",
+    "title": "Physical Security Monitoring",
+    "description": "Premises shall be continuously monitored for unauthorized physical access.",
+    "control_family": "Physical Security",
+    "priority": "Medium",
+    "implementation_guidance": "Implement surveillance and monitoring systems. Review logs and respond to alerts. Integrate with access control systems."
+  },
+  {
+    "framework_abbreviation": "ISO 27001",
+    "control_id": "A.8.1",
+    "title": "User Endpoint Devices",
+    "description": "Information stored on, processed by or accessible via user endpoint devices shall be protected.",
+    "control_family": "Endpoint Security",
+    "priority": "High",
+    "implementation_guidance": "Implement endpoint protection solutions. Encrypt device storage. Apply security configurations and patches."
+  },
+  {
+    "framework_abbreviation": "ISO 27001",
+    "control_id": "A.8.2",
+    "title": "Privileged Access Rights",
+    "description": "The allocation and use of privileged access rights shall be restricted and managed.",
+    "control_family": "Access Control",
+    "priority": "Critical",
+    "implementation_guidance": "Limit privileged access to minimum required. Implement PAM solutions. Monitor and audit privileged activities."
+  },
+  {
+    "framework_abbreviation": "ISO 27001",
+    "control_id": "A.8.5",
+    "title": "Secure Authentication",
+    "description": "Secure authentication technologies and procedures shall be implemented based on information access restrictions and the topic-specific policy on access control.",
+    "control_family": "Access Control",
+    "priority": "Critical",
+    "implementation_guidance": "Implement MFA for sensitive systems. Use strong authentication protocols. Protect authentication credentials."
+  },
+  {
+    "framework_abbreviation": "ISO 27001",
+    "control_id": "A.8.8",
+    "title": "Management of Technical Vulnerabilities",
+    "description": "Information about technical vulnerabilities of information systems in use shall be obtained, the organization's exposure to such vulnerabilities shall be evaluated and appropriate measures shall be taken.",
+    "control_family": "Vulnerability Management",
+    "priority": "High",
+    "implementation_guidance": "Conduct regular vulnerability scans. Prioritize and remediate vulnerabilities based on risk. Track remediation status."
+  },
+  {
+    "framework_abbreviation": "ISO 27001",
+    "control_id": "A.8.9",
+    "title": "Configuration Management",
+    "description": "Configurations, including security configurations, of hardware, software, services and networks shall be established, documented, implemented, monitored and reviewed.",
+    "control_family": "Configuration Management",
+    "priority": "High",
+    "implementation_guidance": "Establish secure baseline configurations. Use configuration management tools. Monitor for configuration drift."
+  },
+  {
+    "framework_abbreviation": "ISO 27001",
+    "control_id": "A.8.12",
+    "title": "Data Leakage Prevention",
+    "description": "Data leakage prevention measures shall be applied to systems, networks and any other devices that process, store or transmit sensitive information.",
+    "control_family": "Data Protection",
+    "priority": "High",
+    "implementation_guidance": "Implement DLP solutions for email, endpoints, and network. Define and monitor for sensitive data patterns. Respond to policy violations."
+  },
+  {
+    "framework_abbreviation": "ISO 27001",
+    "control_id": "A.8.15",
+    "title": "Logging",
+    "description": "Logs that record activities, exceptions, faults and other relevant events shall be produced, stored, protected and analysed.",
+    "control_family": "Monitoring & Logging",
+    "priority": "High",
+    "implementation_guidance": "Implement centralized logging. Define log retention periods. Protect logs from tampering. Regularly review and analyze logs."
+  },
+  {
+    "framework_abbreviation": "ISO 27001",
+    "control_id": "A.8.16",
+    "title": "Monitoring Activities",
+    "description": "Networks, systems and applications shall be monitored for anomalous behaviour and appropriate actions taken to evaluate potential information security incidents.",
+    "control_family": "Monitoring & Logging",
+    "priority": "High",
+    "implementation_guidance": "Implement SIEM or monitoring solutions. Define alerting thresholds. Investigate anomalies promptly."
+  },
+  {
+    "framework_abbreviation": "ISO 27001",
+    "control_id": "A.8.20",
+    "title": "Networks Security",
+    "description": "Networks and network devices shall be secured, managed and controlled to protect information in systems and applications.",
+    "control_family": "Network Security",
+    "priority": "High",
+    "implementation_guidance": "Implement network segmentation. Use firewalls and IDS/IPS. Monitor network traffic and respond to threats."
+  },
+  {
+    "framework_abbreviation": "ISO 27001",
+    "control_id": "A.8.24",
+    "title": "Use of Cryptography",
+    "description": "Rules for the effective use of cryptography, including cryptographic key management, shall be defined and implemented.",
+    "control_family": "Encryption",
+    "priority": "Critical",
+    "implementation_guidance": "Define cryptographic standards and key management procedures. Use approved algorithms. Protect and rotate keys appropriately."
+  },
+  {
+    "framework_abbreviation": "SOC 2",
+    "control_id": "CC1.1",
+    "title": "COSO Principle 1: Demonstrates Commitment to Integrity and Ethical Values",
+    "description": "The entity demonstrates a commitment to integrity and ethical values.",
+    "control_family": "Governance",
+    "priority": "High",
+    "implementation_guidance": "Establish code of conduct. Communicate ethical expectations. Enforce accountability for violations."
+  },
+  {
+    "framework_abbreviation": "SOC 2",
+    "control_id": "CC1.2",
+    "title": "Board Independence and Oversight",
+    "description": "The board of directors demonstrates independence from management and exercises oversight of the development and performance of internal control.",
+    "control_family": "Governance",
+    "priority": "High",
+    "implementation_guidance": "Ensure board oversight of security. Provide regular security reports to board. Maintain board independence."
+  },
+  {
+    "framework_abbreviation": "SOC 2",
+    "control_id": "CC2.1",
+    "title": "Information and Communication - Internal",
+    "description": "The entity obtains or generates and uses relevant, quality information to support the functioning of internal control.",
+    "control_family": "Governance",
+    "priority": "Medium",
+    "implementation_guidance": "Establish internal communication channels for security. Ensure relevant information reaches decision makers."
+  },
+  {
+    "framework_abbreviation": "SOC 2",
+    "control_id": "CC3.1",
+    "title": "Risk Assessment - Objectives",
+    "description": "The entity specifies objectives with sufficient clarity to enable the identification and assessment of risks relating to objectives.",
+    "control_family": "Risk Management",
+    "priority": "High",
+    "implementation_guidance": "Define security objectives aligned with business goals. Identify and document risks to achieving objectives."
+  },
+  {
+    "framework_abbreviation": "SOC 2",
+    "control_id": "CC3.2",
+    "title": "Risk Identification and Analysis",
+    "description": "The entity identifies risks to the achievement of its objectives across the entity and analyzes risks as a basis for determining how the risks should be managed.",
+    "control_family": "Risk Management",
+    "priority": "Critical",
+    "implementation_guidance": "Conduct comprehensive risk assessments. Analyze likelihood and impact. Prioritize risks for treatment."
+  },
+  {
+    "framework_abbreviation": "SOC 2",
+    "control_id": "CC4.1",
+    "title": "Monitoring Activities - Ongoing and Separate Evaluations",
+    "description": "The entity selects, develops, and performs ongoing and/or separate evaluations to ascertain whether the components of internal control are present and functioning.",
+    "control_family": "Monitoring & Logging",
+    "priority": "High",
+    "implementation_guidance": "Implement continuous monitoring. Conduct periodic control assessments. Track and report on control effectiveness."
+  },
+  {
+    "framework_abbreviation": "SOC 2",
+    "control_id": "CC5.1",
+    "title": "Selection and Development of Control Activities",
+    "description": "The entity selects and develops control activities that contribute to the mitigation of risks to the achievement of objectives to acceptable levels.",
+    "control_family": "Governance",
+    "priority": "High",
+    "implementation_guidance": "Design controls based on risk assessment. Document control objectives and procedures. Implement controls consistently."
+  },
+  {
+    "framework_abbreviation": "SOC 2",
+    "control_id": "CC5.2",
+    "title": "General Technology Controls",
+    "description": "The entity also selects and develops general control activities over technology to support the achievement of objectives.",
+    "control_family": "IT Operations",
+    "priority": "High",
+    "implementation_guidance": "Implement IT general controls covering change management, access controls, and operations. Monitor control effectiveness."
+  },
+  {
+    "framework_abbreviation": "SOC 2",
+    "control_id": "CC6.1",
+    "title": "Logical and Physical Access Controls",
+    "description": "The entity implements logical access security software, infrastructure, and architectures over protected information assets to protect them from security events.",
+    "control_family": "Access Control",
+    "priority": "Critical",
+    "implementation_guidance": "Implement access control systems. Use role-based access. Monitor access and investigate anomalies."
+  },
+  {
+    "framework_abbreviation": "SOC 2",
+    "control_id": "CC6.2",
+    "title": "User Access Registration and Authorization",
+    "description": "Prior to issuing system credentials and granting system access, the entity registers and authorizes new internal and external users.",
+    "control_family": "Access Control",
+    "priority": "High",
+    "implementation_guidance": "Establish formal access request and approval process. Verify identity before granting access. Document all access grants."
+  },
+  {
+    "framework_abbreviation": "SOC 2",
+    "control_id": "CC6.3",
+    "title": "User Access Removal",
+    "description": "The entity removes access to protected information assets when the access is no longer required.",
+    "control_family": "Access Control",
+    "priority": "High",
+    "implementation_guidance": "Implement timely access removal upon termination or role change. Conduct periodic access reviews. Document access removals."
+  },
+  {
+    "framework_abbreviation": "SOC 2",
+    "control_id": "CC6.6",
+    "title": "Transmission Encryption",
+    "description": "The entity implements controls to prevent or detect and act upon the introduction of unauthorized or malicious software.",
+    "control_family": "Encryption",
+    "priority": "Critical",
+    "implementation_guidance": "Encrypt data in transit using TLS 1.2+. Implement secure protocols for all external communications."
+  },
+  {
+    "framework_abbreviation": "SOC 2",
+    "control_id": "CC6.7",
+    "title": "Access Restrictions to Data at Rest",
+    "description": "The entity restricts the transmission, movement, and removal of information to authorized internal and external users and processes.",
+    "control_family": "Data Protection",
+    "priority": "High",
+    "implementation_guidance": "Implement data classification. Control data movement based on classification. Monitor for unauthorized data transfers."
+  },
+  {
+    "framework_abbreviation": "SOC 2",
+    "control_id": "CC7.1",
+    "title": "Detection and Monitoring",
+    "description": "To meet its objectives, the entity uses detection and monitoring procedures to identify changes to configurations that result in the introduction of new vulnerabilities.",
+    "control_family": "Monitoring & Logging",
+    "priority": "High",
+    "implementation_guidance": "Implement configuration monitoring. Alert on unauthorized changes. Investigate and remediate configuration drift."
+  },
+  {
+    "framework_abbreviation": "SOC 2",
+    "control_id": "CC7.2",
+    "title": "Security Event Monitoring",
+    "description": "The entity monitors system components and the operation of those components for anomalies that are indicative of malicious acts, natural disasters, and errors.",
+    "control_family": "Monitoring & Logging",
+    "priority": "High",
+    "implementation_guidance": "Implement SIEM or security monitoring. Define use cases and alerts. Monitor and respond to security events."
+  },
+  {
+    "framework_abbreviation": "SOC 2",
+    "control_id": "CC7.3",
+    "title": "Security Incident Response",
+    "description": "The entity evaluates security events to determine whether they could or have resulted in a failure of the entity to meet its objectives and, if so, takes actions to prevent or address such failures.",
+    "control_family": "Incident Response",
+    "priority": "Critical",
+    "implementation_guidance": "Evaluate all security events. Classify and prioritize incidents. Take appropriate response actions."
+  },
+  {
+    "framework_abbreviation": "SOC 2",
+    "control_id": "CC7.4",
+    "title": "Incident Response and Recovery",
+    "description": "The entity responds to identified security incidents by executing a defined incident response program to understand, contain, remediate, and communicate security incidents.",
+    "control_family": "Incident Response",
+    "priority": "Critical",
+    "implementation_guidance": "Execute incident response procedures. Contain and eradicate threats. Recover systems and communicate appropriately."
+  },
+  {
+    "framework_abbreviation": "SOC 2",
+    "control_id": "CC7.5",
+    "title": "Incident Recovery",
+    "description": "The entity identifies, develops, and implements activities to recover from identified security incidents.",
+    "control_family": "Incident Response",
+    "priority": "High",
+    "implementation_guidance": "Plan for incident recovery. Test recovery procedures. Document lessons learned and improve processes."
+  },
+  {
+    "framework_abbreviation": "SOC 2",
+    "control_id": "CC8.1",
+    "title": "Change Management",
+    "description": "The entity authorizes, designs, develops or acquires, configures, documents, tests, approves, and implements changes to infrastructure, data, software, and procedures.",
+    "control_family": "Change Management",
+    "priority": "High",
+    "implementation_guidance": "Implement formal change management process. Test changes before deployment. Document and approve all changes."
+  },
+  {
+    "framework_abbreviation": "SOC 2",
+    "control_id": "CC9.1",
+    "title": "Business Continuity Planning",
+    "description": "The entity identifies, develops, and implements activities to recover critical systems and resume normal operations in a timely manner.",
+    "control_family": "Business Continuity",
+    "priority": "High",
+    "implementation_guidance": "Develop business continuity plans. Define recovery objectives. Test plans regularly and update based on results."
+  },
+  {
+    "framework_abbreviation": "SOC 2",
+    "control_id": "CC9.2",
+    "title": "Vendor Risk Management",
+    "description": "The entity assesses and manages risks associated with vendors and business partners.",
+    "control_family": "Third-Party Risk",
+    "priority": "High",
+    "implementation_guidance": "Assess vendor security before engagement. Monitor vendor compliance. Include security requirements in contracts."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "GV.OC-01",
+    "title": "Organizational Context",
+    "description": "The organizational mission is understood and informs cybersecurity risk management.",
+    "control_family": "Governance",
+    "priority": "High",
+    "implementation_guidance": "Document organizational mission and objectives. Align cybersecurity program with business goals."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "GV.RM-01",
+    "title": "Risk Management Strategy",
+    "description": "Risk management strategy is established, including risk tolerance and appetite.",
+    "control_family": "Risk Management",
+    "priority": "Critical",
+    "implementation_guidance": "Define risk tolerance and appetite. Document risk management strategy. Communicate to stakeholders."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "GV.RR-01",
+    "title": "Roles and Responsibilities",
+    "description": "Organizational cybersecurity roles and responsibilities are established and communicated.",
+    "control_family": "Governance",
+    "priority": "High",
+    "implementation_guidance": "Define and document security roles. Assign responsibilities clearly. Communicate to all personnel."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "GV.PO-01",
+    "title": "Policy",
+    "description": "Cybersecurity policy is established based on organizational context, strategy, and priorities.",
+    "control_family": "Governance",
+    "priority": "Critical",
+    "implementation_guidance": "Develop comprehensive security policies. Align with organizational strategy. Review and update regularly."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "ID.AM-01",
+    "title": "Asset Inventory - Hardware",
+    "description": "Inventories of hardware managed by the organization are maintained.",
+    "control_family": "Asset Management",
+    "priority": "High",
+    "implementation_guidance": "Maintain complete hardware inventory. Include all physical and virtual assets. Update inventory regularly."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "ID.AM-02",
+    "title": "Asset Inventory - Software",
+    "description": "Inventories of software, services, and systems managed by the organization are maintained.",
+    "control_family": "Asset Management",
+    "priority": "High",
+    "implementation_guidance": "Maintain software inventory including versions. Track licenses and dependencies. Update regularly."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "ID.AM-03",
+    "title": "Data Inventory",
+    "description": "Representations of the organization's authorized network communication and internal and external network data flows are maintained.",
+    "control_family": "Asset Management",
+    "priority": "High",
+    "implementation_guidance": "Document data flows and network communications. Classify data by sensitivity. Map data to systems and processes."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "ID.RA-01",
+    "title": "Vulnerability Identification",
+    "description": "Vulnerabilities in assets are identified, validated, and recorded.",
+    "control_family": "Vulnerability Management",
+    "priority": "High",
+    "implementation_guidance": "Conduct regular vulnerability scans. Validate findings. Maintain vulnerability database."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "ID.RA-02",
+    "title": "Threat Intelligence",
+    "description": "Cyber threat intelligence is received from information sharing forums and sources.",
+    "control_family": "Risk Management",
+    "priority": "Medium",
+    "implementation_guidance": "Subscribe to threat intelligence feeds. Participate in information sharing. Apply intelligence to risk decisions."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "ID.RA-03",
+    "title": "Risk Assessment",
+    "description": "Internal and external threats are identified and documented.",
+    "control_family": "Risk Management",
+    "priority": "Critical",
+    "implementation_guidance": "Identify and assess threats. Document threat scenarios. Update threat assessment regularly."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "PR.AA-01",
+    "title": "Identity Management",
+    "description": "Identities and credentials for authorized users, services, and hardware are managed by the organization.",
+    "control_family": "Access Control",
+    "priority": "Critical",
+    "implementation_guidance": "Implement identity lifecycle management. Use strong authentication. Manage credentials securely."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "PR.AA-03",
+    "title": "Multi-Factor Authentication",
+    "description": "Users, services, and hardware are authenticated.",
+    "control_family": "Access Control",
+    "priority": "Critical",
+    "implementation_guidance": "Implement MFA for all users. Require MFA for privileged access. Use hardware tokens where appropriate."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "PR.AA-05",
+    "title": "Access Permissions",
+    "description": "Access permissions, entitlements, and authorizations are defined and managed.",
+    "control_family": "Access Control",
+    "priority": "High",
+    "implementation_guidance": "Define access permissions based on roles. Implement least privilege. Review and certify access regularly."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "PR.AT-01",
+    "title": "Security Awareness Training",
+    "description": "Personnel are provided with awareness and training.",
+    "control_family": "Awareness & Training",
+    "priority": "High",
+    "implementation_guidance": "Provide security awareness training to all. Include role-specific training. Track completion and effectiveness."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "PR.DS-01",
+    "title": "Data-at-Rest Protection",
+    "description": "The confidentiality, integrity, and availability of data-at-rest are protected.",
+    "control_family": "Data Protection",
+    "priority": "Critical",
+    "implementation_guidance": "Encrypt sensitive data at rest. Implement access controls. Monitor for unauthorized access."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "PR.DS-02",
+    "title": "Data-in-Transit Protection",
+    "description": "The confidentiality, integrity, and availability of data-in-transit are protected.",
+    "control_family": "Encryption",
+    "priority": "Critical",
+    "implementation_guidance": "Encrypt all data in transit. Use TLS 1.2 or higher. Validate certificates."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "PR.PS-01",
+    "title": "Configuration Management",
+    "description": "Configuration management practices are established and applied.",
+    "control_family": "Configuration Management",
+    "priority": "High",
+    "implementation_guidance": "Establish secure baselines. Manage configurations centrally. Monitor for drift."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "PR.PS-02",
+    "title": "Software Maintenance",
+    "description": "Software is maintained, replaced, and removed commensurate with risk.",
+    "control_family": "Vulnerability Management",
+    "priority": "High",
+    "implementation_guidance": "Maintain software patching program. Replace end-of-life software. Remove unauthorized software."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "PR.IR-01",
+    "title": "Incident Response Planning",
+    "description": "Incident response plans are established, maintained, and tested.",
+    "control_family": "Incident Response",
+    "priority": "Critical",
+    "implementation_guidance": "Develop incident response plan. Define roles and procedures. Test plan regularly."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "DE.CM-01",
+    "title": "Network Monitoring",
+    "description": "Networks and network services are monitored to find potentially adverse events.",
+    "control_family": "Monitoring & Logging",
+    "priority": "High",
+    "implementation_guidance": "Monitor network traffic. Detect anomalies and threats. Alert on suspicious activity."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "DE.CM-03",
+    "title": "Personnel Activity Monitoring",
+    "description": "Personnel activity and technology usage are monitored to find potentially adverse events.",
+    "control_family": "Monitoring & Logging",
+    "priority": "Medium",
+    "implementation_guidance": "Monitor user activities. Detect insider threats. Investigate anomalous behavior."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "DE.CM-06",
+    "title": "External Service Provider Monitoring",
+    "description": "External service provider activities and services are monitored to find potentially adverse events.",
+    "control_family": "Third-Party Risk",
+    "priority": "Medium",
+    "implementation_guidance": "Monitor third-party activities. Review service provider reports. Assess ongoing compliance."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "DE.AE-02",
+    "title": "Event Analysis",
+    "description": "Potentially adverse events are analyzed to better understand associated activities.",
+    "control_family": "Monitoring & Logging",
+    "priority": "High",
+    "implementation_guidance": "Analyze security events. Correlate with threat intelligence. Determine impact and scope."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "RS.MA-01",
+    "title": "Incident Management",
+    "description": "The incident response plan is executed in coordination with relevant third parties.",
+    "control_family": "Incident Response",
+    "priority": "Critical",
+    "implementation_guidance": "Execute incident response procedures. Coordinate with stakeholders. Document all actions."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "RS.AN-03",
+    "title": "Incident Analysis",
+    "description": "Analysis is performed to establish what has taken place during an incident and the root cause of the incident.",
+    "control_family": "Incident Response",
+    "priority": "High",
+    "implementation_guidance": "Conduct root cause analysis. Document findings. Apply lessons learned."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "RS.MI-01",
+    "title": "Incident Containment",
+    "description": "Incidents are contained.",
+    "control_family": "Incident Response",
+    "priority": "Critical",
+    "implementation_guidance": "Implement containment strategies. Isolate affected systems. Prevent further damage."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "RS.MI-02",
+    "title": "Incident Mitigation",
+    "description": "Incidents are eradicated.",
+    "control_family": "Incident Response",
+    "priority": "Critical",
+    "implementation_guidance": "Remove threat actors. Eliminate malware. Restore systems to known good state."
+  },
+  {
+    "framework_abbreviation": "NIST CSF",
+    "control_id": "RC.RP-01",
+    "title": "Recovery Planning Execution",
+    "description": "The recovery portion of the incident response plan is executed.",
+    "control_family": "Business Continuity",
+    "priority": "High",
+    "implementation_guidance": "Execute recovery procedures. Restore services in priority order. Verify successful recovery."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "1.1",
+    "title": "Network Security Controls",
+    "description": "Network security controls are installed and maintained.",
+    "control_family": "Network Security",
+    "priority": "Critical",
+    "implementation_guidance": "Implement firewalls and network security controls. Define and enforce traffic rules. Review configurations regularly."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "1.2.1",
+    "title": "Network Diagram",
+    "description": "Configuration standards for NSC rulesets are defined, implemented, and maintained.",
+    "control_family": "Network Security",
+    "priority": "High",
+    "implementation_guidance": "Maintain current network diagrams. Document all connections. Update when changes occur."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "2.1",
+    "title": "Secure Configurations",
+    "description": "Processes and mechanisms for applying secure configurations to all system components are defined and understood.",
+    "control_family": "Configuration Management",
+    "priority": "High",
+    "implementation_guidance": "Define secure configuration standards. Remove default credentials. Harden systems before deployment."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "2.2.1",
+    "title": "Configuration Standards",
+    "description": "Configuration standards are developed, implemented, and maintained.",
+    "control_family": "Configuration Management",
+    "priority": "High",
+    "implementation_guidance": "Document configuration standards for all system types. Apply standards consistently. Review and update regularly."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "3.1",
+    "title": "Account Data Protection",
+    "description": "Processes and mechanisms for protecting stored account data are defined and understood.",
+    "control_family": "Data Protection",
+    "priority": "Critical",
+    "implementation_guidance": "Define data protection requirements. Minimize data storage. Protect all stored account data."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "3.5.1",
+    "title": "PAN Storage Encryption",
+    "description": "PAN is rendered unreadable anywhere it is stored.",
+    "control_family": "Encryption",
+    "priority": "Critical",
+    "implementation_guidance": "Encrypt or hash all stored PAN. Use strong cryptography. Manage keys securely."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "4.1",
+    "title": "Transmission Encryption",
+    "description": "Processes and mechanisms for protecting cardholder data with strong cryptography during transmission over open, public networks are defined and documented.",
+    "control_family": "Encryption",
+    "priority": "Critical",
+    "implementation_guidance": "Encrypt cardholder data in transit. Use TLS 1.2+. Validate certificates."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "5.1",
+    "title": "Anti-Malware",
+    "description": "Processes and mechanisms for protecting all systems and networks from malicious software are defined and understood.",
+    "control_family": "Endpoint Security",
+    "priority": "High",
+    "implementation_guidance": "Deploy anti-malware on all systems. Keep signatures current. Monitor for threats."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "5.2.1",
+    "title": "Anti-Malware Deployment",
+    "description": "An anti-malware solution is deployed on all system components.",
+    "control_family": "Endpoint Security",
+    "priority": "High",
+    "implementation_guidance": "Install anti-malware on all endpoints and servers. Configure for real-time protection. Enable automatic updates."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "6.1",
+    "title": "Secure Development",
+    "description": "Processes and mechanisms for developing and maintaining secure systems and software are defined and understood.",
+    "control_family": "Application Security",
+    "priority": "High",
+    "implementation_guidance": "Implement secure SDLC. Train developers on security. Review code for vulnerabilities."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "6.3.1",
+    "title": "Vulnerability Management",
+    "description": "Security vulnerabilities are identified and managed.",
+    "control_family": "Vulnerability Management",
+    "priority": "High",
+    "implementation_guidance": "Monitor for vulnerabilities. Assess and prioritize. Remediate critical vulnerabilities promptly."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "6.4.1",
+    "title": "Web Application Protection",
+    "description": "Public-facing web applications are protected against attacks.",
+    "control_family": "Application Security",
+    "priority": "Critical",
+    "implementation_guidance": "Deploy WAF or review applications annually. Address OWASP Top 10. Test regularly."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "7.1",
+    "title": "Access Control",
+    "description": "Processes and mechanisms for restricting access to system components and cardholder data are defined and understood.",
+    "control_family": "Access Control",
+    "priority": "Critical",
+    "implementation_guidance": "Define access control policies. Restrict access to need-to-know. Document and enforce."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "7.2.1",
+    "title": "Access Control System",
+    "description": "An access control system is implemented.",
+    "control_family": "Access Control",
+    "priority": "Critical",
+    "implementation_guidance": "Implement access control systems. Enforce least privilege. Log all access attempts."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "8.1",
+    "title": "User Identification",
+    "description": "Processes and mechanisms for identifying users and authenticating access to system components are defined and understood.",
+    "control_family": "Access Control",
+    "priority": "Critical",
+    "implementation_guidance": "Assign unique IDs to all users. Implement strong authentication. Manage credentials securely."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "8.3",
+    "title": "Multi-Factor Authentication",
+    "description": "Strong authentication for users and administrators is established and managed.",
+    "control_family": "Access Control",
+    "priority": "Critical",
+    "implementation_guidance": "Implement MFA for all remote access. Require MFA for admin access to CDE. Use approved MFA methods."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "8.3.6",
+    "title": "Password Requirements",
+    "description": "Passwords/passphrases meet minimum complexity requirements.",
+    "control_family": "Access Control",
+    "priority": "High",
+    "implementation_guidance": "Enforce minimum 12 character passwords. Require complexity. Prevent password reuse."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "9.1",
+    "title": "Physical Access Controls",
+    "description": "Processes and mechanisms for restricting physical access to cardholder data are defined and understood.",
+    "control_family": "Physical Security",
+    "priority": "High",
+    "implementation_guidance": "Define physical access requirements. Control access to sensitive areas. Monitor and log access."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "10.1",
+    "title": "Logging and Monitoring",
+    "description": "Processes and mechanisms for logging and monitoring all access to system components and cardholder data are defined and documented.",
+    "control_family": "Monitoring & Logging",
+    "priority": "Critical",
+    "implementation_guidance": "Log all access to cardholder data. Monitor logs for suspicious activity. Retain logs appropriately."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "10.2.1",
+    "title": "Audit Logs",
+    "description": "Audit logs are enabled and active for all system components and cardholder data.",
+    "control_family": "Monitoring & Logging",
+    "priority": "Critical",
+    "implementation_guidance": "Enable logging on all systems. Capture required events. Protect log integrity."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "10.4.1",
+    "title": "Log Review",
+    "description": "Audit logs are reviewed at least daily.",
+    "control_family": "Monitoring & Logging",
+    "priority": "High",
+    "implementation_guidance": "Review logs daily. Use automated tools for analysis. Investigate anomalies promptly."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "11.1",
+    "title": "Security Testing",
+    "description": "Processes and mechanisms for regular testing of security of systems and networks are defined and understood.",
+    "control_family": "Vulnerability Management",
+    "priority": "High",
+    "implementation_guidance": "Define security testing program. Conduct regular assessments. Document and remediate findings."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "11.3.1",
+    "title": "Vulnerability Scanning",
+    "description": "Internal vulnerability scans are performed at least quarterly.",
+    "control_family": "Vulnerability Management",
+    "priority": "High",
+    "implementation_guidance": "Scan internal systems quarterly. Remediate high-risk vulnerabilities. Rescan to verify fixes."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "11.4.1",
+    "title": "Penetration Testing",
+    "description": "External and internal penetration testing is regularly performed.",
+    "control_family": "Vulnerability Management",
+    "priority": "High",
+    "implementation_guidance": "Conduct annual penetration tests. Test from inside and outside network. Remediate findings."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "12.1",
+    "title": "Information Security Policy",
+    "description": "A comprehensive information security policy is established, published, maintained, and disseminated.",
+    "control_family": "Governance",
+    "priority": "Critical",
+    "implementation_guidance": "Develop comprehensive security policy. Publish and communicate to all. Review annually."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "12.3.1",
+    "title": "Risk Assessment",
+    "description": "A targeted risk analysis is performed for each PCI DSS requirement.",
+    "control_family": "Risk Management",
+    "priority": "High",
+    "implementation_guidance": "Conduct formal risk assessments. Document methodology and results. Update when changes occur."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "12.6.1",
+    "title": "Security Awareness Program",
+    "description": "A formal security awareness program is implemented.",
+    "control_family": "Awareness & Training",
+    "priority": "High",
+    "implementation_guidance": "Implement security awareness training. Cover relevant threats. Train at hire and annually."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "12.8.1",
+    "title": "Third Party Management",
+    "description": "A list of all TPSPs with which account data is shared is maintained.",
+    "control_family": "Third-Party Risk",
+    "priority": "High",
+    "implementation_guidance": "Maintain inventory of TPSPs. Document data shared. Include in vendor management program."
+  },
+  {
+    "framework_abbreviation": "PCI DSS",
+    "control_id": "12.10.1",
+    "title": "Incident Response Plan",
+    "description": "An incident response plan exists and is ready to be activated immediately.",
+    "control_family": "Incident Response",
+    "priority": "Critical",
+    "implementation_guidance": "Develop incident response plan. Define roles and procedures. Test plan annually."
+  },
+  {
+    "framework_abbreviation": "NIST AI RMF",
+    "control_id": "GOVERN 1.1",
+    "title": "AI Risk Management Policies",
+    "description": "Legal and regulatory requirements involving AI are understood, managed, and documented.",
+    "control_family": "AI Governance",
+    "priority": "High",
+    "implementation_guidance": "Identify applicable AI regulations. Document compliance requirements. Monitor regulatory changes."
+  },
+  {
+    "framework_abbreviation": "NIST AI RMF",
+    "control_id": "GOVERN 1.2",
+    "title": "AI Accountability",
+    "description": "The characteristics of trustworthy AI are integrated into organizational policies, processes, and procedures.",
+    "control_family": "AI Governance",
+    "priority": "High",
+    "implementation_guidance": "Define AI ethics principles. Integrate into policies and procedures. Assign accountability."
+  },
+  {
+    "framework_abbreviation": "NIST AI RMF",
+    "control_id": "GOVERN 2.1",
+    "title": "AI Roles and Responsibilities",
+    "description": "Roles and responsibilities and lines of communication related to mapping, measuring, and managing AI risks are documented and are clear to individuals and teams throughout the organization.",
+    "control_family": "AI Governance",
+    "priority": "High",
+    "implementation_guidance": "Define AI risk management roles. Document responsibilities clearly. Establish communication channels."
+  },
+  {
+    "framework_abbreviation": "NIST AI RMF",
+    "control_id": "GOVERN 3.1",
+    "title": "AI Risk Management Process",
+    "description": "Decision-making related to mapping, measuring, and managing AI risks throughout the lifecycle is informed by a diverse team.",
+    "control_family": "AI Governance",
+    "priority": "Medium",
+    "implementation_guidance": "Include diverse perspectives in AI decisions. Document decision processes. Review decisions regularly."
+  },
+  {
+    "framework_abbreviation": "NIST AI RMF",
+    "control_id": "GOVERN 4.1",
+    "title": "AI Risk Culture",
+    "description": "Organizational policies and practices are in place to foster a critical thinking and safety-first mindset in the design, development, deployment, and uses of AI systems.",
+    "control_family": "AI Governance",
+    "priority": "Medium",
+    "implementation_guidance": "Promote safety-first AI culture. Train personnel on AI risks. Encourage reporting concerns."
+  },
+  {
+    "framework_abbreviation": "NIST AI RMF",
+    "control_id": "MAP 1.1",
+    "title": "AI System Context",
+    "description": "Intended purposes, potentially beneficial uses, context of use, and AI system impacts are defined and documented.",
+    "control_family": "AI Governance",
+    "priority": "High",
+    "implementation_guidance": "Document AI system purposes. Identify potential impacts. Define acceptable use boundaries."
+  },
+  {
+    "framework_abbreviation": "NIST AI RMF",
+    "control_id": "MAP 1.5",
+    "title": "AI Risk Identification",
+    "description": "Organizational risk tolerances are determined and documented.",
+    "control_family": "Risk Management",
+    "priority": "High",
+    "implementation_guidance": "Define AI risk tolerance. Document thresholds. Apply to AI system decisions."
+  },
+  {
+    "framework_abbreviation": "NIST AI RMF",
+    "control_id": "MAP 2.1",
+    "title": "AI Data Requirements",
+    "description": "The specific tasks and methods used to implement the tasks that the AI system will support are defined.",
+    "control_family": "AI Governance",
+    "priority": "High",
+    "implementation_guidance": "Define AI system tasks. Document data requirements. Specify implementation methods."
+  },
+  {
+    "framework_abbreviation": "NIST AI RMF",
+    "control_id": "MAP 3.1",
+    "title": "AI Bias Assessment",
+    "description": "Potential benefits and harms are documented.",
+    "control_family": "AI Governance",
+    "priority": "High",
+    "implementation_guidance": "Assess potential AI biases. Document potential harms. Plan mitigation strategies."
+  },
+  {
+    "framework_abbreviation": "NIST AI RMF",
+    "control_id": "MEASURE 1.1",
+    "title": "AI Performance Metrics",
+    "description": "Approaches and metrics for measurement of AI risks are developed.",
+    "control_family": "AI Governance",
+    "priority": "High",
+    "implementation_guidance": "Define AI performance metrics. Establish measurement approaches. Document baselines."
+  },
+  {
+    "framework_abbreviation": "NIST AI RMF",
+    "control_id": "MEASURE 2.1",
+    "title": "AI Testing",
+    "description": "AI system evaluations are conducted in a manner consistent with the defined testing methods and metrics.",
+    "control_family": "AI Governance",
+    "priority": "High",
+    "implementation_guidance": "Test AI systems against defined metrics. Document results. Address deficiencies."
+  },
+  {
+    "framework_abbreviation": "NIST AI RMF",
+    "control_id": "MEASURE 2.5",
+    "title": "AI Fairness Assessment",
+    "description": "The AI system is evaluated for safety, security, and resilience.",
+    "control_family": "AI Governance",
+    "priority": "High",
+    "implementation_guidance": "Evaluate AI for fairness. Test for bias in outputs. Document and address issues."
+  },
+  {
+    "framework_abbreviation": "NIST AI RMF",
+    "control_id": "MEASURE 3.1",
+    "title": "AI Model Monitoring",
+    "description": "Approaches for measuring AI risks are documented and applied.",
+    "control_family": "Monitoring & Logging",
+    "priority": "High",
+    "implementation_guidance": "Monitor AI model performance. Track drift and degradation. Alert on anomalies."
+  },
+  {
+    "framework_abbreviation": "NIST AI RMF",
+    "control_id": "MANAGE 1.1",
+    "title": "AI Risk Prioritization",
+    "description": "A determination is made as to whether the AI system achieves its intended purposes and is within risk tolerance levels.",
+    "control_family": "Risk Management",
+    "priority": "High",
+    "implementation_guidance": "Evaluate AI against intended purposes. Compare to risk tolerance. Document decisions."
+  },
+  {
+    "framework_abbreviation": "NIST AI RMF",
+    "control_id": "MANAGE 2.1",
+    "title": "AI Risk Response",
+    "description": "Resources required to manage AI risks are taken into account.",
+    "control_family": "Risk Management",
+    "priority": "Medium",
+    "implementation_guidance": "Allocate resources for AI risk management. Plan response actions. Document resource needs."
+  },
+  {
+    "framework_abbreviation": "NIST AI RMF",
+    "control_id": "MANAGE 3.1",
+    "title": "AI Risk Mitigation",
+    "description": "AI risks and benefits from third-party entities are managed.",
+    "control_family": "Third-Party Risk",
+    "priority": "Medium",
+    "implementation_guidance": "Assess third-party AI risks. Manage vendor AI components. Monitor ongoing compliance."
+  },
+  {
+    "framework_abbreviation": "NIST AI RMF",
+    "control_id": "MANAGE 4.1",
+    "title": "AI Incident Management",
+    "description": "Post-deployment AI system monitoring plans are implemented.",
+    "control_family": "Monitoring & Logging",
+    "priority": "High",
+    "implementation_guidance": "Implement AI monitoring in production. Track incidents. Respond to AI-related issues."
+  },
+  {
+    "framework_abbreviation": "GLBA",
+    "control_id": "314.3(a)",
+    "title": "Information Security Program",
+    "description": "Develop, implement, and maintain a comprehensive information security program that contains administrative, technical, and physical safeguards.",
+    "control_family": "Governance",
+    "priority": "Critical",
+    "implementation_guidance": "Develop comprehensive security program. Address all safeguard types. Document and maintain program."
+  },
+  {
+    "framework_abbreviation": "GLBA",
+    "control_id": "314.3(b)",
+    "title": "Qualified Individual",
+    "description": "Designate a qualified individual responsible for overseeing and implementing the information security program.",
+    "control_family": "Governance",
+    "priority": "Critical",
+    "implementation_guidance": "Designate security program owner. Ensure adequate qualifications. Provide necessary authority and resources."
+  },
+  {
+    "framework_abbreviation": "GLBA",
+    "control_id": "314.4(a)",
+    "title": "Risk Assessment",
+    "description": "Identify reasonably foreseeable internal and external risks to the security, confidentiality, and integrity of customer information.",
+    "control_family": "Risk Management",
+    "priority": "Critical",
+    "implementation_guidance": "Conduct comprehensive risk assessments. Identify internal and external risks. Document findings and treatments."
+  },
+  {
+    "framework_abbreviation": "GLBA",
+    "control_id": "314.4(b)(1)",
+    "title": "Access Controls",
+    "description": "Implement and periodically review access controls, including technical and physical controls to authenticate and permit access only to authorized users.",
+    "control_family": "Access Control",
+    "priority": "Critical",
+    "implementation_guidance": "Implement access controls for customer information. Review access periodically. Enforce authentication requirements."
+  },
+  {
+    "framework_abbreviation": "GLBA",
+    "control_id": "314.4(b)(2)",
+    "title": "Data Inventory",
+    "description": "Identify data, personnel, devices, systems, and facilities that make up the information system.",
+    "control_family": "Asset Management",
+    "priority": "High",
+    "implementation_guidance": "Inventory all components of information systems. Include data, personnel, and facilities. Update regularly."
+  },
+  {
+    "framework_abbreviation": "GLBA",
+    "control_id": "314.4(b)(3)",
+    "title": "Encryption",
+    "description": "Protect by encryption all customer information held or transmitted both in transit and at rest.",
+    "control_family": "Encryption",
+    "priority": "Critical",
+    "implementation_guidance": "Encrypt customer information at rest and in transit. Use strong encryption algorithms. Manage keys securely."
+  },
+  {
+    "framework_abbreviation": "GLBA",
+    "control_id": "314.4(b)(4)",
+    "title": "Secure Development",
+    "description": "Adopt secure development practices for in-house developed applications.",
+    "control_family": "Application Security",
+    "priority": "High",
+    "implementation_guidance": "Implement secure SDLC. Train developers on security. Review and test applications."
+  },
+  {
+    "framework_abbreviation": "GLBA",
+    "control_id": "314.4(b)(5)",
+    "title": "Multi-Factor Authentication",
+    "description": "Implement multi-factor authentication for any individual accessing any information system.",
+    "control_family": "Access Control",
+    "priority": "Critical",
+    "implementation_guidance": "Require MFA for system access. Implement for all users. Include remote access scenarios."
+  },
+  {
+    "framework_abbreviation": "GLBA",
+    "control_id": "314.4(b)(6)",
+    "title": "Disposal Procedures",
+    "description": "Develop, implement, and maintain procedures for the secure disposal of customer information.",
+    "control_family": "Data Protection",
+    "priority": "High",
+    "implementation_guidance": "Define data disposal procedures. Securely destroy customer information. Document disposal activities."
+  },
+  {
+    "framework_abbreviation": "GLBA",
+    "control_id": "314.4(b)(7)",
+    "title": "Change Management",
+    "description": "Adopt procedures for change management.",
+    "control_family": "Change Management",
+    "priority": "High",
+    "implementation_guidance": "Implement change management process. Test changes before deployment. Document all changes."
+  },
+  {
+    "framework_abbreviation": "GLBA",
+    "control_id": "314.4(b)(8)",
+    "title": "Monitoring and Logging",
+    "description": "Implement policies, procedures, and controls designed to monitor and log the activity of authorized users.",
+    "control_family": "Monitoring & Logging",
+    "priority": "High",
+    "implementation_guidance": "Monitor user activities. Maintain activity logs. Investigate suspicious activities."
+  },
+  {
+    "framework_abbreviation": "GLBA",
+    "control_id": "314.4(c)(1)",
+    "title": "Continuous Monitoring",
+    "description": "Continuously monitor the effectiveness of safeguards' key controls, systems, and procedures.",
+    "control_family": "Monitoring & Logging",
+    "priority": "High",
+    "implementation_guidance": "Implement continuous monitoring. Assess control effectiveness. Adjust based on findings."
+  },
+  {
+    "framework_abbreviation": "GLBA",
+    "control_id": "314.4(c)(2)",
+    "title": "Annual Penetration Testing",
+    "description": "Conduct annual penetration testing of information systems.",
+    "control_family": "Vulnerability Management",
+    "priority": "High",
+    "implementation_guidance": "Conduct annual penetration tests. Address identified vulnerabilities. Document results and remediation."
+  },
+  {
+    "framework_abbreviation": "GLBA",
+    "control_id": "314.4(c)(3)",
+    "title": "Vulnerability Assessment",
+    "description": "Conduct vulnerability assessments at least every six months.",
+    "control_family": "Vulnerability Management",
+    "priority": "High",
+    "implementation_guidance": "Scan for vulnerabilities semi-annually. Prioritize and remediate findings. Track remediation status."
+  },
+  {
+    "framework_abbreviation": "GLBA",
+    "control_id": "314.4(d)(1)",
+    "title": "Security Training",
+    "description": "Implement policies and procedures to ensure personnel are able to enact the information security program.",
+    "control_family": "Awareness & Training",
+    "priority": "High",
+    "implementation_guidance": "Provide security training to personnel. Cover program requirements. Update training regularly."
+  },
+  {
+    "framework_abbreviation": "GLBA",
+    "control_id": "314.4(d)(2)",
+    "title": "Security Awareness",
+    "description": "Provide security awareness training to address current security threats and vulnerabilities.",
+    "control_family": "Awareness & Training",
+    "priority": "High",
+    "implementation_guidance": "Conduct security awareness training. Address current threats. Include phishing awareness."
+  },
+  {
+    "framework_abbreviation": "GLBA",
+    "control_id": "314.4(e)",
+    "title": "Service Provider Oversight",
+    "description": "Oversee service providers by taking reasonable steps to select and retain service providers that are capable of maintaining appropriate safeguards.",
+    "control_family": "Third-Party Risk",
+    "priority": "High",
+    "implementation_guidance": "Assess service providers before engagement. Require contractual safeguards. Monitor ongoing compliance."
+  },
+  {
+    "framework_abbreviation": "GLBA",
+    "control_id": "314.4(f)",
+    "title": "Program Updates",
+    "description": "Evaluate and adjust the information security program in light of relevant circumstances.",
+    "control_family": "Governance",
+    "priority": "High",
+    "implementation_guidance": "Review program regularly. Adjust based on changes. Document program updates."
+  },
+  {
+    "framework_abbreviation": "GLBA",
+    "control_id": "314.4(g)",
+    "title": "Incident Response Plan",
+    "description": "Establish a written incident response plan designed to promptly respond to, and recover from, any security event materially affecting the confidentiality, integrity, or availability of customer information.",
+    "control_family": "Incident Response",
+    "priority": "Critical",
+    "implementation_guidance": "Develop incident response plan. Define roles and procedures. Test plan regularly."
+  },
+  {
+    "framework_abbreviation": "GLBA",
+    "control_id": "314.4(h)",
+    "title": "Board Reporting",
+    "description": "Require the qualified individual to report in writing, regularly and at least annually, to the board of directors.",
+    "control_family": "Governance",
+    "priority": "High",
+    "implementation_guidance": "Provide annual written reports to board. Cover program status and risks. Document board oversight."
+  }
+]
