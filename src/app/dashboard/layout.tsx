@@ -17,9 +17,12 @@ import {
   LogOut,
   Menu,
   X,
+  FileDown,
 } from "lucide-react";
 import { getSession, clearSession } from "@/lib/auth";
 import { getInitials } from "@/lib/utils";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import { OrgSwitcher } from "@/components/auth/OrgSwitcher";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
@@ -28,6 +31,7 @@ const navigation = [
   { name: "Mapping", href: "/dashboard/mapping", icon: GitBranch },
   { name: "Gap Analysis", href: "/dashboard/gaps", icon: AlertTriangle },
   { name: "AI Assistant", href: "/dashboard/chat", icon: MessageSquare },
+  { name: "Exports", href: "/dashboard/exports", icon: FileDown },
   { name: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
 
@@ -109,6 +113,14 @@ export default function DashboardLayout({
             <span className="text-xl font-bold text-cyber-text">CyberComply</span>
           </div>
 
+          {/* Organization Switcher */}
+          <div className="px-4 py-3 border-b border-cyber-border">
+            <OrgSwitcher
+              currentOrgId={session?.organization_id || session?.organizationId}
+              currentOrgName={session?.organization_name || "My Organization"}
+            />
+          </div>
+
           {/* Navigation */}
           <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
             {navigation.map((item) => {
@@ -165,7 +177,9 @@ export default function DashboardLayout({
 
       {/* Main content */}
       <main className="lg:pl-64">
-        <div className="min-h-screen">{children}</div>
+        <div className="min-h-screen p-6">
+          <ProtectedRoute>{children}</ProtectedRoute>
+        </div>
       </main>
 
       {/* Mobile overlay */}
