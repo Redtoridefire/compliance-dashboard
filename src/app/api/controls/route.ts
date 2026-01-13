@@ -1,66 +1,111 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createServerClient } from "@/lib/supabase";
+import { createServerClient, isSupabaseConfigured } from "@/lib/supabase";
+import controlsData from "../../../../seed-data/controls.json";
+import frameworksData from "../../../../seed-data/frameworks.json";
+
+// Create framework ID map from seed data
+function getFrameworkIdMap() {
+  const map: Record<string, string> = {};
+  frameworksData.forEach((f, index) => {
+    map[f.abbreviation] = `framework-${index + 1}`;
+  });
+  return map;
+}
+
+// Convert seed data to match database format
+function getSeedControls() {
+  const frameworkMap = getFrameworkIdMap();
+  return controlsData.map((c, index) => ({
+    id: `control-${index + 1}`,
+    framework_id: frameworkMap[c.framework_abbreviation] || `framework-unknown`,
+    control_id: c.control_id,
+    title: c.title,
+    description: c.description,
+    control_family: c.control_family,
+    priority: c.priority,
+    implementation_guidance: c.implementation_guidance,
+    created_at: new Date().toISOString(),
+    framework: frameworksData.find(f => f.abbreviation === c.framework_abbreviation) ? {
+      id: frameworkMap[c.framework_abbreviation],
+      name: frameworksData.find(f => f.abbreviation === c.framework_abbreviation)?.name,
+      abbreviation: c.framework_abbreviation,
+    } : null,
+  }));
+}
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = createServerClient();
     const { searchParams } = new URL(request.url);
     const organizationId = searchParams.get("organizationId");
     const frameworkId = searchParams.get("frameworkId");
     const controlFamily = searchParams.get("controlFamily");
 
-    if (!organizationId) {
-      return NextResponse.json(
-        { error: "organizationId is required" },
-        { status: 400 }
-      );
+    let controls;
+    let implementations: Array<{ control_id: string; implementation_status: string; implementation_notes?: string }> = [];
+
+    // Try to fetch from Supabase if configured
+    if (isSupabaseConfigured && organizationId) {
+      const supabase = createServerClient();
+
+      // Get organization's selected frameworks
+      const { data: orgFrameworks } = await supabase
+        .from("organization_frameworks")
+        .select("framework_id")
+        .eq("organization_id", organizationId);
+
+      const frameworkIds = orgFrameworks?.map((of) => of.framework_id) || [];
+
+      if (frameworkIds.length > 0) {
+        // Build controls query
+        let controlsQuery = supabase
+          .from("controls")
+          .select("*, framework:frameworks(*)")
+          .in("framework_id", frameworkIds)
+          .order("control_family")
+          .order("control_id");
+
+        if (frameworkId) {
+          controlsQuery = controlsQuery.eq("framework_id", frameworkId);
+        }
+
+        if (controlFamily) {
+          controlsQuery = controlsQuery.eq("control_family", controlFamily);
+        }
+
+        const { data: controlsFromDb } = await controlsQuery;
+
+        if (controlsFromDb && controlsFromDb.length > 0) {
+          controls = controlsFromDb;
+
+          // Get implementations
+          const { data: implData } = await supabase
+            .from("control_implementations")
+            .select("*")
+            .eq("organization_id", organizationId);
+
+          implementations = implData || [];
+        }
+      }
     }
 
-    // Get organization's selected frameworks
-    const { data: orgFrameworks } = await supabase
-      .from("organization_frameworks")
-      .select("framework_id")
-      .eq("organization_id", organizationId);
+    // Fall back to seed data if no controls from Supabase
+    if (!controls || controls.length === 0) {
+      controls = getSeedControls();
 
-    const frameworkIds = orgFrameworks?.map((of) => of.framework_id) || [];
+      // Apply filters to seed data
+      if (frameworkId) {
+        controls = controls.filter((c) => c.framework_id === frameworkId);
+      }
 
-    if (frameworkIds.length === 0) {
-      return NextResponse.json({ controls: [], implementations: {} });
+      if (controlFamily) {
+        controls = controls.filter(
+          (c) => c.control_family.toLowerCase() === controlFamily.toLowerCase()
+        );
+      }
     }
-
-    // Build controls query
-    let controlsQuery = supabase
-      .from("controls")
-      .select("*, framework:frameworks(*)")
-      .in("framework_id", frameworkIds)
-      .order("control_family")
-      .order("control_id");
-
-    if (frameworkId) {
-      controlsQuery = controlsQuery.eq("framework_id", frameworkId);
-    }
-
-    if (controlFamily) {
-      controlsQuery = controlsQuery.eq("control_family", controlFamily);
-    }
-
-    const { data: controls, error: controlsError } = await controlsQuery;
-
-    if (controlsError) {
-      return NextResponse.json(
-        { error: controlsError.message },
-        { status: 500 }
-      );
-    }
-
-    // Get implementations
-    const { data: implementations } = await supabase
-      .from("control_implementations")
-      .select("*")
-      .eq("organization_id", organizationId);
 
     // Create implementation map
-    type Implementation = NonNullable<typeof implementations>[number];
+    type Implementation = (typeof implementations)[number];
     const implementationMap: Record<string, Implementation> = {};
     implementations?.forEach((impl) => {
       if (impl.control_id) {
@@ -84,9 +129,13 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error("Controls API error:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    // Return seed data as fallback on any error
+    const seedControls = getSeedControls();
+    const controlFamilies = [...new Set(seedControls.map((c) => c.control_family))].sort();
+    return NextResponse.json({
+      controls: seedControls.map(c => ({ ...c, implementation: null })),
+      controlFamilies,
+      total: seedControls.length,
+    });
   }
 }
