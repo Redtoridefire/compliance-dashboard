@@ -66,7 +66,15 @@ export default function Home() {
   const handleGetStarted = () => {
     if (selectedIndustry) {
       router.push(`/onboarding?industry=${selectedIndustry}`);
+    } else {
+      // Scroll to industry selector if no industry selected
+      document.getElementById("industry-selector")?.scrollIntoView({ behavior: "smooth" });
     }
+  };
+
+  const handleSignUp = () => {
+    // Go directly to onboarding - user can select industry there
+    router.push("/onboarding");
   };
 
   const handleDemoMode = () => {
@@ -123,7 +131,7 @@ export default function Home() {
           </div>
 
           {/* Industry Selector */}
-          <div className="max-w-5xl mx-auto">
+          <div id="industry-selector" className="max-w-5xl mx-auto scroll-mt-8">
             <h2 className="text-2xl font-semibold text-center mb-8 text-cyber-text">
               Select Your Industry to Get Started
             </h2>
@@ -234,8 +242,8 @@ export default function Home() {
               Join security teams who are mapping controls and closing gaps faster with CyberComply.
             </p>
             <div className="flex justify-center gap-4">
-              <Button size="lg" variant="glow" onClick={handleGetStarted}>
-                Start Free
+              <Button size="lg" variant="glow" onClick={handleSignUp}>
+                Sign Up Free
               </Button>
               <Button size="lg" variant="outline" asChild>
                 <a href="https://github.com/cybercomply/framework-mapper" target="_blank" rel="noopener noreferrer">
