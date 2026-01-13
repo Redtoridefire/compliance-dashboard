@@ -84,10 +84,21 @@ function OnboardingContent() {
   };
 
   const getRecommendedFrameworks = () => {
-    return frameworks.filter((f) =>
-      f.applicable_industries.includes(formData.industry) ||
-      f.applicable_industries.includes("other")
-    );
+    // If no industry selected yet, show all frameworks
+    if (!formData.industry) {
+      return frameworks;
+    }
+
+    // Filter frameworks by industry with null safety
+    const filtered = frameworks.filter((f) => {
+      const industries = f.applicable_industries || [];
+      return industries.includes(formData.industry) ||
+             industries.includes("other") ||
+             industries.length === 0; // Include frameworks with no industry restrictions
+    });
+
+    // If no frameworks match the filter, return all frameworks
+    return filtered.length > 0 ? filtered : frameworks;
   };
 
   const handleSubmit = async () => {
@@ -321,9 +332,20 @@ function OnboardingContent() {
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-sm text-cyber-text-muted">
-                Based on your industry ({INDUSTRIES.find((i) => i.id === formData.industry)?.label}),
+                Based on your industry ({INDUSTRIES.find((i) => i.id === formData.industry)?.label || "selected"}),
                 we recommend these frameworks:
               </p>
+
+              {frameworks.length === 0 ? (
+                <div className="p-4 rounded-lg border border-cyber-border bg-cyber-bg text-center">
+                  <Loader2 className="w-6 h-6 animate-spin mx-auto mb-2 text-cyber-primary" />
+                  <p className="text-sm text-cyber-text-muted">Loading frameworks...</p>
+                </div>
+              ) : getRecommendedFrameworks().length === 0 ? (
+                <div className="p-4 rounded-lg border border-cyber-border bg-cyber-bg text-center">
+                  <p className="text-sm text-cyber-text-muted">No frameworks found for your industry. Showing all available frameworks.</p>
+                </div>
+              ) : null}
 
               <div className="space-y-3">
                 {getRecommendedFrameworks().map((framework) => {
