@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createServerClient } from "@/lib/supabase";
+import { createServerClient, isSupabaseConfigured } from "@/lib/supabase";
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = createServerClient();
     const body = await request.json();
     const {
       organizationId,
@@ -20,52 +19,74 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if implementation exists
-    const { data: existing } = await supabase
-      .from("control_implementations")
-      .select("id")
-      .eq("organization_id", organizationId)
-      .eq("control_id", controlId)
-      .single();
+    // If Supabase is configured, use it
+    if (isSupabaseConfigured) {
+      const supabase = createServerClient();
 
-    if (existing) {
-      // Update existing implementation
-      const { data, error } = await supabase
+      // Check if implementation exists
+      const { data: existing } = await supabase
         .from("control_implementations")
-        .update({
-          implementation_status: implementationStatus,
-          implementation_notes: implementationNotes,
-          evidence_urls: evidenceUrls || [],
-          updated_at: new Date().toISOString(),
-        })
-        .eq("id", existing.id)
-        .select()
+        .select("id")
+        .eq("organization_id", organizationId)
+        .eq("control_id", controlId)
         .single();
 
-      if (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
-      }
+      if (existing) {
+        // Update existing implementation
+        const { data, error } = await supabase
+          .from("control_implementations")
+          .update({
+            implementation_status: implementationStatus,
+            implementation_notes: implementationNotes,
+            evidence_urls: evidenceUrls || [],
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", existing.id)
+          .select()
+          .single();
 
-      return NextResponse.json({ implementation: data });
+        if (error) {
+          return NextResponse.json({ error: error.message }, { status: 500 });
+        }
+
+        return NextResponse.json({ implementation: data });
+      } else {
+        // Create new implementation
+        const { data, error } = await supabase
+          .from("control_implementations")
+          .insert({
+            organization_id: organizationId,
+            control_id: controlId,
+            implementation_status: implementationStatus,
+            implementation_notes: implementationNotes,
+            evidence_urls: evidenceUrls || [],
+          })
+          .select()
+          .single();
+
+        if (error) {
+          return NextResponse.json({ error: error.message }, { status: 500 });
+        }
+
+        return NextResponse.json({ implementation: data });
+      }
     } else {
-      // Create new implementation
-      const { data, error } = await supabase
-        .from("control_implementations")
-        .insert({
-          organization_id: organizationId,
-          control_id: controlId,
-          implementation_status: implementationStatus,
-          implementation_notes: implementationNotes,
-          evidence_urls: evidenceUrls || [],
-        })
-        .select()
-        .single();
+      // Demo mode - return mock implementation
+      const mockImplementation = {
+        id: `impl-${Date.now()}`,
+        organization_id: organizationId,
+        control_id: controlId,
+        implementation_status: implementationStatus,
+        implementation_notes: implementationNotes,
+        evidence_urls: evidenceUrls || [],
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
 
-      if (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
-      }
-
-      return NextResponse.json({ implementation: data });
+      return NextResponse.json({
+        implementation: mockImplementation,
+        demo: true,
+      });
     }
   } catch (error) {
     console.error("Implementations API error:", error);
@@ -78,7 +99,6 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
-    const supabase = createServerClient();
     const body = await request.json();
     const { implementationId, ...updates } = body;
 
@@ -89,41 +109,58 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    const updateData: Record<string, unknown> = {
-      updated_at: new Date().toISOString(),
-    };
+    // If Supabase is configured, use it
+    if (isSupabaseConfigured) {
+      const supabase = createServerClient();
 
-    if (updates.implementationStatus !== undefined) {
-      updateData.implementation_status = updates.implementationStatus;
-    }
-    if (updates.implementationNotes !== undefined) {
-      updateData.implementation_notes = updates.implementationNotes;
-    }
-    if (updates.evidenceUrls !== undefined) {
-      updateData.evidence_urls = updates.evidenceUrls;
-    }
-    if (updates.assignedTo !== undefined) {
-      updateData.assigned_to = updates.assignedTo;
-    }
-    if (updates.lastReviewedAt !== undefined) {
-      updateData.last_reviewed_at = updates.lastReviewedAt;
-    }
-    if (updates.lastReviewedBy !== undefined) {
-      updateData.last_reviewed_by = updates.lastReviewedBy;
-    }
+      const updateData: Record<string, unknown> = {
+        updated_at: new Date().toISOString(),
+      };
 
-    const { data, error } = await supabase
-      .from("control_implementations")
-      .update(updateData)
-      .eq("id", implementationId)
-      .select()
-      .single();
+      if (updates.implementationStatus !== undefined) {
+        updateData.implementation_status = updates.implementationStatus;
+      }
+      if (updates.implementationNotes !== undefined) {
+        updateData.implementation_notes = updates.implementationNotes;
+      }
+      if (updates.evidenceUrls !== undefined) {
+        updateData.evidence_urls = updates.evidenceUrls;
+      }
+      if (updates.assignedTo !== undefined) {
+        updateData.assigned_to = updates.assignedTo;
+      }
+      if (updates.lastReviewedAt !== undefined) {
+        updateData.last_reviewed_at = updates.lastReviewedAt;
+      }
+      if (updates.lastReviewedBy !== undefined) {
+        updateData.last_reviewed_by = updates.lastReviewedBy;
+      }
 
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      const { data, error } = await supabase
+        .from("control_implementations")
+        .update(updateData)
+        .eq("id", implementationId)
+        .select()
+        .single();
+
+      if (error) {
+        return NextResponse.json({ error: error.message }, { status: 500 });
+      }
+
+      return NextResponse.json({ implementation: data });
+    } else {
+      // Demo mode - return mock updated implementation
+      const mockImplementation = {
+        id: implementationId,
+        ...updates,
+        updated_at: new Date().toISOString(),
+      };
+
+      return NextResponse.json({
+        implementation: mockImplementation,
+        demo: true,
+      });
     }
-
-    return NextResponse.json({ implementation: data });
   } catch (error) {
     console.error("Implementations API error:", error);
     return NextResponse.json(

@@ -1,11 +1,35 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createServerClient } from "@/lib/supabase";
+import { createServerClient, isSupabaseConfigured } from "@/lib/supabase";
 import { generateSessionToken } from "@/lib/utils";
+
+// Demo mode storage (in-memory for demo purposes)
+const demoUsers: Map<string, {
+  id: string;
+  email: string;
+  name: string;
+  role: string;
+  organization_id: string;
+  session_token: string | null;
+}> = new Map();
+
+const demoOrganizations: Map<string, {
+  id: string;
+  name: string;
+  industry: string;
+  sub_industry?: string;
+  company_size?: string;
+  geography?: string;
+}> = new Map();
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { action, ...data } = body;
+
+    // Demo mode handling
+    if (!isSupabaseConfigured) {
+      return handleDemoMode(action, data);
+    }
 
     const supabase = createServerClient();
 
@@ -184,5 +208,155 @@ export async function POST(request: NextRequest) {
       { error: "Internal server error" },
       { status: 500 }
     );
+  }
+}
+
+// Demo mode handler - provides full functionality without database
+function handleDemoMode(action: string, data: Record<string, unknown>) {
+  switch (action) {
+    case "login": {
+      const { email } = data as { email: string };
+
+      // Find demo user by email
+      const user = Array.from(demoUsers.values()).find(u => u.email === email);
+
+      if (!user) {
+        return NextResponse.json(
+          { error: "User not found. In demo mode, please register first." },
+          { status: 404 }
+        );
+      }
+
+      // Generate new session token
+      const sessionToken = generateSessionToken();
+      user.session_token = sessionToken;
+      demoUsers.set(user.id, user);
+
+      const organization = demoOrganizations.get(user.organization_id);
+
+      return NextResponse.json({
+        session: {
+          userId: user.id,
+          organizationId: user.organization_id,
+          email: user.email,
+          name: user.name,
+          role: user.role,
+          sessionToken: sessionToken,
+        },
+        organization,
+        demo: true,
+      });
+    }
+
+    case "register": {
+      const {
+        organizationName,
+        industry,
+        subIndustry,
+        companySize,
+        geography,
+        userName,
+        userEmail,
+      } = data as {
+        organizationName: string;
+        industry: string;
+        subIndustry?: string;
+        companySize?: string;
+        geography?: string;
+        userName: string;
+        userEmail: string;
+      };
+
+      // Check if user already exists in demo
+      const existingUser = Array.from(demoUsers.values()).find(u => u.email === userEmail);
+      if (existingUser) {
+        return NextResponse.json(
+          { error: "User with this email already exists" },
+          { status: 400 }
+        );
+      }
+
+      // Create demo organization
+      const orgId = `demo-org-${Date.now()}`;
+      const org = {
+        id: orgId,
+        name: organizationName,
+        industry,
+        sub_industry: subIndustry,
+        company_size: companySize,
+        geography,
+      };
+      demoOrganizations.set(orgId, org);
+
+      // Generate session token
+      const sessionToken = generateSessionToken();
+
+      // Create demo user
+      const userId = `demo-user-${Date.now()}`;
+      const user = {
+        id: userId,
+        email: userEmail,
+        name: userName,
+        organization_id: orgId,
+        role: "admin",
+        session_token: sessionToken,
+      };
+      demoUsers.set(userId, user);
+
+      return NextResponse.json({
+        session: {
+          userId: user.id,
+          organizationId: org.id,
+          email: user.email,
+          name: user.name,
+          role: user.role,
+          sessionToken: sessionToken,
+        },
+        organization: org,
+        demo: true,
+      });
+    }
+
+    case "logout": {
+      const { sessionToken } = data as { sessionToken?: string };
+
+      if (sessionToken) {
+        const user = Array.from(demoUsers.values()).find(u => u.session_token === sessionToken);
+        if (user) {
+          user.session_token = null;
+          demoUsers.set(user.id, user);
+        }
+      }
+
+      return NextResponse.json({ success: true, demo: true });
+    }
+
+    case "validate": {
+      const { sessionToken } = data as { sessionToken: string };
+
+      const user = Array.from(demoUsers.values()).find(u => u.session_token === sessionToken);
+
+      if (!user) {
+        return NextResponse.json({ valid: false }, { status: 401 });
+      }
+
+      return NextResponse.json({
+        valid: true,
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          role: user.role,
+          organization_id: user.organization_id,
+        },
+        demo: true,
+      });
+    }
+
+    default:
+      return NextResponse.json(
+        { error: "Invalid action" },
+        { status: 400 }
+      );
   }
 }

@@ -1,6 +1,11 @@
 import OpenAI from "openai";
 import type { Control, Framework, ControlImplementation, Organization } from "@/types";
 
+// Check if OpenAI API is configured
+export function isOpenAIConfigured(): boolean {
+  return Boolean(process.env.OPENAI_API_KEY);
+}
+
 // Create OpenAI client (server-side only)
 export function createOpenAIClient() {
   const apiKey = process.env.OPENAI_API_KEY;
