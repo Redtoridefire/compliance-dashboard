@@ -283,7 +283,11 @@ export function AnimatedList({ children, className }: AnimatedListProps) {
   );
 }
 
-export function AnimatedListItem({ children, ...props }: MotionDivProps) {
+interface MotionLiProps extends HTMLMotionProps<"li"> {
+  children: ReactNode;
+}
+
+export function AnimatedListItem({ children, ...props }: MotionLiProps) {
   return (
     <motion.li
       variants={{

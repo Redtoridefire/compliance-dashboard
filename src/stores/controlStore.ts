@@ -204,9 +204,10 @@ export const useControlStore = create<ControlState>((set, get) => ({
       // Refresh implementations
       await get().fetchImplementations(organizationId);
 
-      // Update controlsWithImplementation
+      // Update controlsWithImplementation - use existing controlsWithImplementation as source
+      // since it contains the framework data from the initial fetch
       const implMap = get().implementations;
-      const updatedControlsWithImpl = get().controls.map((control) => ({
+      const updatedControlsWithImpl = get().controlsWithImplementation.map((control) => ({
         ...control,
         implementation: implMap.get(control.id),
       }));

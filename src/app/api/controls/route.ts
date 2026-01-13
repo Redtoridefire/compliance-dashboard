@@ -60,9 +60,12 @@ export async function GET(request: NextRequest) {
       .eq("organization_id", organizationId);
 
     // Create implementation map
-    const implementationMap: Record<string, typeof implementations extends (infer T)[] ? T : never> = {};
+    type Implementation = NonNullable<typeof implementations>[number];
+    const implementationMap: Record<string, Implementation> = {};
     implementations?.forEach((impl) => {
-      implementationMap[impl.control_id] = impl;
+      if (impl.control_id) {
+        implementationMap[impl.control_id] = impl;
+      }
     });
 
     // Combine controls with implementations

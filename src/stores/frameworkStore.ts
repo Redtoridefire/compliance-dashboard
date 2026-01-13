@@ -93,7 +93,7 @@ export const useFrameworkStore = create<FrameworkState>((set, get) => ({
       const stats: FrameworkComplianceScore[] = [];
 
       for (const of of orgFrameworks || []) {
-        const framework = of.framework as Framework;
+        const framework = of.framework as unknown as Framework;
 
         // Get total controls for this framework
         const { count: totalControls } = await supabase
