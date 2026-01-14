@@ -43,8 +43,8 @@ export async function GET(request: NextRequest) {
     let controls;
     let implementations: Array<{ control_id: string; implementation_status: string; implementation_notes?: string }> = [];
 
-    // Try to fetch from Supabase if configured
-    if (isSupabaseConfigured && organizationId) {
+    // Try to fetch from Supabase if configured (call as function for runtime check)
+    if (isSupabaseConfigured() && organizationId) {
       const supabase = createServerClient();
 
       // Get organization's selected frameworks

@@ -60,8 +60,8 @@ export async function GET(request: NextRequest) {
 
     let gaps;
 
-    // Try Supabase if configured
-    if (isSupabaseConfigured && organizationId) {
+    // Try Supabase if configured (call as function for runtime check)
+    if (isSupabaseConfigured() && organizationId) {
       const supabase = createServerClient();
       let query = supabase
         .from("gap_analysis")
@@ -127,8 +127,8 @@ export async function POST(request: NextRequest) {
     }
 
     if (action === "compute") {
-      // If Supabase is configured, use it
-      if (isSupabaseConfigured) {
+      // If Supabase is configured, use it (call as function for runtime check)
+      if (isSupabaseConfigured()) {
         const supabase = createServerClient();
 
         // Get selected frameworks

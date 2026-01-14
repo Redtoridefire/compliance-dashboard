@@ -1,10 +1,35 @@
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
+// IMPORTANT: These functions check configuration at RUNTIME, not build time
+// This fixes the issue where env vars may not be available during the build
 
-// Check if Supabase is configured
-export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
+function getSupabaseUrl(): string {
+  return process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+}
+
+function getSupabaseAnonKey(): string {
+  return process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
+}
+
+// Check if Supabase is configured - MUST be a function for runtime evaluation
+export function isSupabaseConfigured(): boolean {
+  const url = getSupabaseUrl();
+  const key = getSupabaseAnonKey();
+
+  const configured = Boolean(url && key && url.length > 0 && key.length > 0);
+
+  // Debug logging for troubleshooting (only log on server)
+  if (typeof window === "undefined") {
+    console.log("[Supabase Config]", {
+      configured,
+      hasUrl: Boolean(url && url.length > 0),
+      hasKey: Boolean(key && key.length > 0),
+      urlPrefix: url ? url.substring(0, 30) + "..." : "(not set)",
+    });
+  }
+
+  return configured;
+}
 
 // Create a mock client for when Supabase is not configured
 function createMockClient(): SupabaseClient {
@@ -16,6 +41,7 @@ function createMockClient(): SupabaseClient {
     delete: () => mockQueryBuilder,
     eq: () => mockQueryBuilder,
     neq: () => mockQueryBuilder,
+    ilike: () => mockQueryBuilder,
     in: () => mockQueryBuilder,
     or: () => mockQueryBuilder,
     order: () => mockQueryBuilder,
@@ -33,19 +59,49 @@ function createMockClient(): SupabaseClient {
   } as unknown as SupabaseClient;
 }
 
-// Client-side Supabase client (uses anon key)
-export const supabase: SupabaseClient = isSupabaseConfigured
-  ? createClient(supabaseUrl, supabaseAnonKey)
-  : createMockClient();
+// Singleton for client-side Supabase client
+let clientInstance: SupabaseClient | null = null;
+
+// Get client-side Supabase client (uses anon key) - created lazily at runtime
+export function getSupabaseClient(): SupabaseClient {
+  if (clientInstance) {
+    return clientInstance;
+  }
+
+  if (!isSupabaseConfigured()) {
+    console.warn("[Supabase] Not configured - using mock client");
+    clientInstance = createMockClient();
+    return clientInstance;
+  }
+
+  clientInstance = createClient(getSupabaseUrl(), getSupabaseAnonKey());
+  return clientInstance;
+}
+
+// For backwards compatibility - lazily initialized
+export const supabase: SupabaseClient = new Proxy({} as SupabaseClient, {
+  get(_target, prop) {
+    const client = getSupabaseClient();
+    const value = client[prop as keyof SupabaseClient];
+    if (typeof value === "function") {
+      return value.bind(client);
+    }
+    return value;
+  },
+});
 
 // Server-side Supabase client with service role (for API routes)
+// Creates a new client on each call to ensure fresh runtime config
 export function createServerClient(): SupabaseClient {
-  if (!isSupabaseConfigured) {
+  if (!isSupabaseConfigured()) {
+    console.warn("[Supabase Server] Not configured - using mock client");
     return createMockClient();
   }
 
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || supabaseAnonKey;
-  return createClient(supabaseUrl, serviceRoleKey, {
+  const url = getSupabaseUrl();
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || getSupabaseAnonKey();
+
+  return createClient(url, serviceRoleKey, {
     auth: {
       autoRefreshToken: false,
       persistSession: false,

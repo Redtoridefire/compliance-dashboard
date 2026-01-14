@@ -137,7 +137,7 @@ export async function POST(request: NextRequest) {
 
         // Fetch control details - use seed data in demo mode
         let control;
-        if (isSupabaseConfigured) {
+        if (isSupabaseConfigured()) {
           const { data: dbControl, error: controlError } = await supabase
             .from("controls")
             .select("*, framework:frameworks(*)")
@@ -163,7 +163,7 @@ export async function POST(request: NextRequest) {
 
         // Fetch implementation
         let implementation = null;
-        if (isSupabaseConfigured) {
+        if (isSupabaseConfigured()) {
           const { data: impl } = await supabase
             .from("control_implementations")
             .select("*")
@@ -175,7 +175,7 @@ export async function POST(request: NextRequest) {
 
         // Find mapped controls in other frameworks
         let mappings = null;
-        if (isSupabaseConfigured) {
+        if (isSupabaseConfigured()) {
           const { data: mapData } = await supabase
             .from("control_mappings")
             .select(
@@ -204,7 +204,7 @@ export async function POST(request: NextRequest) {
         });
 
         // Log the interaction if Supabase is configured
-        if (isSupabaseConfigured) {
+        if (isSupabaseConfigured()) {
           await supabase.from("ai_interactions").insert({
             organization_id: organizationId,
             interaction_type: "gap_analysis",
@@ -230,7 +230,7 @@ export async function POST(request: NextRequest) {
       case "framework_suggestions": {
         // Fetch organization details
         let organization = null;
-        if (isSupabaseConfigured) {
+        if (isSupabaseConfigured()) {
           const { data: org, error: orgError } = await supabase
             .from("organizations")
             .select("*")
@@ -253,7 +253,7 @@ export async function POST(request: NextRequest) {
 
         // Fetch available frameworks
         let frameworks;
-        if (isSupabaseConfigured) {
+        if (isSupabaseConfigured()) {
           const { data: fwData } = await supabase
             .from("frameworks")
             .select("*")
@@ -278,7 +278,7 @@ export async function POST(request: NextRequest) {
         });
 
         // Log the interaction if Supabase is configured
-        if (isSupabaseConfigured) {
+        if (isSupabaseConfigured()) {
           await supabase.from("ai_interactions").insert({
             organization_id: organizationId,
             interaction_type: "recommendation",
@@ -299,7 +299,7 @@ export async function POST(request: NextRequest) {
 
         // Fetch organization details
         let organization = null;
-        if (isSupabaseConfigured) {
+        if (isSupabaseConfigured()) {
           const { data: org, error: orgError } = await supabase
             .from("organizations")
             .select("*")
@@ -321,7 +321,7 @@ export async function POST(request: NextRequest) {
 
         // Fetch selected frameworks
         let selectedFrameworks: any[] = [];
-        if (isSupabaseConfigured) {
+        if (isSupabaseConfigured()) {
           const { data: orgFrameworks } = await supabase
             .from("organization_frameworks")
             .select("*, framework:frameworks(*)")
@@ -332,7 +332,7 @@ export async function POST(request: NextRequest) {
 
         // Calculate compliance score
         let complianceScore = 0;
-        if (isSupabaseConfigured) {
+        if (isSupabaseConfigured()) {
           const { data: implementations } = await supabase
             .from("control_implementations")
             .select("implementation_status")
@@ -354,7 +354,7 @@ export async function POST(request: NextRequest) {
         });
 
         // Log the interaction if Supabase is configured
-        if (isSupabaseConfigured) {
+        if (isSupabaseConfigured()) {
           const userMessage = messages[messages.length - 1]?.content || "";
           await supabase.from("ai_interactions").insert({
             organization_id: organizationId,

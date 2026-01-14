@@ -27,8 +27,8 @@ export async function GET(request: NextRequest) {
 
     let frameworks;
 
-    // Try to fetch from Supabase if configured
-    if (isSupabaseConfigured) {
+    // Try to fetch from Supabase if configured (call as function for runtime check)
+    if (isSupabaseConfigured()) {
       const supabase = createServerClient();
       let query = supabase
         .from("frameworks")
@@ -73,7 +73,7 @@ export async function GET(request: NextRequest) {
     }
 
     // If organizationId provided, also fetch selected frameworks
-    if (organizationId && isSupabaseConfigured) {
+    if (organizationId && isSupabaseConfigured()) {
       const supabase = createServerClient();
       const { data: selectedFrameworks } = await supabase
         .from("organization_frameworks")
@@ -118,8 +118,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // If Supabase is configured, use it
-    if (isSupabaseConfigured) {
+    // If Supabase is configured, use it (call as function for runtime check)
+    if (isSupabaseConfigured()) {
       const supabase = createServerClient();
 
       if (action === "select") {

@@ -26,8 +26,13 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { action, ...data } = body;
 
+    // Check Supabase configuration at RUNTIME (isSupabaseConfigured is now a function)
+    const supabaseReady = isSupabaseConfigured();
+    console.log("[Auth API] Supabase configured:", supabaseReady);
+
     // Demo mode handling
-    if (!isSupabaseConfigured) {
+    if (!supabaseReady) {
+      console.log("[Auth API] Using demo mode");
       return handleDemoMode(action, data);
     }
 

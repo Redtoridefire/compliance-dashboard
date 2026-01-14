@@ -19,8 +19,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // If Supabase is configured, use it
-    if (isSupabaseConfigured) {
+    // If Supabase is configured, use it (call as function for runtime check)
+    if (isSupabaseConfigured()) {
       const supabase = createServerClient();
 
       // Check if implementation exists
@@ -109,8 +109,8 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    // If Supabase is configured, use it
-    if (isSupabaseConfigured) {
+    // If Supabase is configured, use it (call as function for runtime check)
+    if (isSupabaseConfigured()) {
       const supabase = createServerClient();
 
       const updateData: Record<string, unknown> = {
