@@ -37,16 +37,31 @@ export async function POST(request: NextRequest) {
       case "login": {
         const { email } = data;
 
-        // Find user by email
+        if (!email) {
+          return NextResponse.json(
+            { error: "Email is required" },
+            { status: 400 }
+          );
+        }
+
+        // Find user by email (case-insensitive)
         const { data: user, error: userError } = await supabase
           .from("users")
           .select("*, organization:organizations(*)")
-          .eq("email", email)
+          .ilike("email", email)
           .single();
 
-        if (userError || !user) {
+        if (userError) {
+          console.error("Login query error:", userError);
           return NextResponse.json(
-            { error: "User not found" },
+            { error: "User not found. Please sign up first." },
+            { status: 404 }
+          );
+        }
+
+        if (!user) {
+          return NextResponse.json(
+            { error: "User not found. Please sign up first." },
             { status: 404 }
           );
         }
@@ -64,8 +79,9 @@ export async function POST(request: NextRequest) {
           .eq("id", user.id);
 
         if (updateError) {
+          console.error("Session update error:", updateError);
           return NextResponse.json(
-            { error: "Failed to create session" },
+            { error: "Failed to create session. Please try again." },
             { status: 500 }
           );
         }

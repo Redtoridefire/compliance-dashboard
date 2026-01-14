@@ -19,17 +19,29 @@ export default function LoginPage() {
     setIsLoading(true);
     setError("");
 
+    if (!email || !email.trim()) {
+      setError("Please enter your email address");
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const response = await fetch("/api/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "login", email }),
+        body: JSON.stringify({ action: "login", email: email.trim().toLowerCase() }),
       });
 
       const data = await response.json();
 
-      if (data.error) {
-        setError(data.error);
+      if (!response.ok || data.error) {
+        setError(data.error || "Login failed. Please try again.");
+        setIsLoading(false);
+        return;
+      }
+
+      if (!data.session) {
+        setError("Invalid response from server. Please try again.");
         setIsLoading(false);
         return;
       }
@@ -37,9 +49,10 @@ export default function LoginPage() {
       localStorage.setItem("cybercomply_session", JSON.stringify(data.session));
       router.push("/dashboard");
     } catch (err) {
-      setError("An error occurred. Please try again.");
+      console.error("Login error:", err);
+      setError("An error occurred. Please check your connection and try again.");
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   const handleDemoLogin = async () => {
