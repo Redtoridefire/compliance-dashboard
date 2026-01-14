@@ -28,8 +28,12 @@ export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) 
 
         const session = JSON.parse(sessionStr);
 
-        // Validate session has required fields
-        if (!session.user_id || !session.organization_id) {
+        // Validate session has required fields (check both camelCase and snake_case for compatibility)
+        const userId = session.userId || session.user_id;
+        const organizationId = session.organizationId || session.organization_id;
+        const sessionToken = session.sessionToken || session.session_token;
+
+        if (!userId || !organizationId) {
           localStorage.removeItem("cybercomply_session");
           router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
           return;
@@ -60,7 +64,7 @@ export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) 
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               action: "validate",
-              session_token: session.session_token,
+              sessionToken: sessionToken,
             }),
           });
 
