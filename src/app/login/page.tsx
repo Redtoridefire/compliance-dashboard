@@ -126,8 +126,8 @@ export default function LoginPage() {
 
           <p className="text-center text-sm text-cyber-text-muted mt-6">
             Don&apos;t have an account?{" "}
-            <a href="/" className="text-cyber-primary hover:underline">
-              Get Started
+            <a href="/onboarding" className="text-cyber-primary hover:underline">
+              Sign Up
             </a>
           </p>
         </CardContent>

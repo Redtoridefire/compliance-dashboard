@@ -103,6 +103,9 @@ export default function Home() {
               <Button variant="outline" onClick={handleDemoMode}>
                 Try Demo
               </Button>
+              <Button variant="glow" onClick={handleSignUp}>
+                Sign Up
+              </Button>
             </div>
           </header>
 
