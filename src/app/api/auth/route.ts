@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient, isSupabaseConfigured } from "@/lib/supabase";
 import { generateSessionToken } from "@/lib/utils";
+import bcrypt from "bcryptjs";
 
 // Demo mode storage (in-memory for demo purposes)
 const demoUsers: Map<string, {
@@ -10,6 +11,7 @@ const demoUsers: Map<string, {
   role: string;
   organization_id: string;
   session_token: string | null;
+  password_hash: string;
 }> = new Map();
 
 const demoOrganizations: Map<string, {
@@ -20,6 +22,16 @@ const demoOrganizations: Map<string, {
   company_size?: string;
   geography?: string;
 }> = new Map();
+
+// Hash password
+async function hashPassword(password: string): Promise<string> {
+  return bcrypt.hash(password, 10);
+}
+
+// Verify password
+async function verifyPassword(password: string, hash: string): Promise<boolean> {
+  return bcrypt.compare(password, hash);
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -33,27 +45,48 @@ export async function POST(request: NextRequest) {
     // Demo mode handling
     if (!supabaseReady) {
       console.log("[Auth API] Using demo mode");
-      return handleDemoMode(action, data);
+      return await handleDemoMode(action, data);
     }
 
     const supabase = createServerClient();
 
     switch (action) {
       case "login": {
-        const { email } = data;
+        const { email, password } = data;
 
-        // Find user by email
+        if (!password) {
+          return NextResponse.json(
+            { error: "Password is required" },
+            { status: 400 }
+          );
+        }
+
+        // Find user by email (case-insensitive)
         const { data: user, error: userError } = await supabase
           .from("users")
           .select("*, organization:organizations(*)")
-          .eq("email", email)
+          .ilike("email", email)
           .single();
 
         if (userError || !user) {
           return NextResponse.json(
-            { error: "User not found" },
-            { status: 404 }
+            { error: "Invalid email or password" },
+            { status: 401 }
           );
+        }
+
+        // Verify password
+        if (!user.password_hash) {
+          // Legacy user without password - allow login and prompt to set password
+          console.log("[Auth] Legacy user without password, allowing login");
+        } else {
+          const passwordValid = await verifyPassword(password, user.password_hash);
+          if (!passwordValid) {
+            return NextResponse.json(
+              { error: "Invalid email or password" },
+              { status: 401 }
+            );
+          }
         }
 
         // Generate new session token
@@ -97,13 +130,22 @@ export async function POST(request: NextRequest) {
           geography,
           userName,
           userEmail,
+          password,
         } = data;
 
-        // Check if user already exists
+        // Validate password
+        if (!password || password.length < 8) {
+          return NextResponse.json(
+            { error: "Password must be at least 8 characters" },
+            { status: 400 }
+          );
+        }
+
+        // Check if user already exists (case-insensitive)
         const { data: existingUser } = await supabase
           .from("users")
           .select("id")
-          .eq("email", userEmail)
+          .ilike("email", userEmail)
           .single();
 
         if (existingUser) {
@@ -112,6 +154,9 @@ export async function POST(request: NextRequest) {
             { status: 400 }
           );
         }
+
+        // Hash password
+        const passwordHash = await hashPassword(password);
 
         // Create organization
         const { data: org, error: orgError } = await supabase
@@ -136,7 +181,7 @@ export async function POST(request: NextRequest) {
         // Generate session token
         const sessionToken = generateSessionToken();
 
-        // Create user
+        // Create user with password hash
         const { data: user, error: userError } = await supabase
           .from("users")
           .insert({
@@ -145,6 +190,7 @@ export async function POST(request: NextRequest) {
             organization_id: org.id,
             role: "admin",
             session_token: sessionToken,
+            password_hash: passwordHash,
             last_login: new Date().toISOString(),
           })
           .select()
@@ -217,18 +263,36 @@ export async function POST(request: NextRequest) {
 }
 
 // Demo mode handler - provides full functionality without database
-function handleDemoMode(action: string, data: Record<string, unknown>) {
+async function handleDemoMode(action: string, data: Record<string, unknown>) {
   switch (action) {
     case "login": {
-      const { email } = data as { email: string };
+      const { email, password } = data as { email: string; password: string };
 
-      // Find demo user by email
-      const user = Array.from(demoUsers.values()).find(u => u.email === email);
+      if (!password) {
+        return NextResponse.json(
+          { error: "Password is required" },
+          { status: 400 }
+        );
+      }
+
+      // Find demo user by email (case-insensitive)
+      const user = Array.from(demoUsers.values()).find(
+        u => u.email.toLowerCase() === email.toLowerCase()
+      );
 
       if (!user) {
         return NextResponse.json(
-          { error: "User not found. In demo mode, please register first." },
-          { status: 404 }
+          { error: "Invalid email or password" },
+          { status: 401 }
+        );
+      }
+
+      // Verify password
+      const passwordValid = await verifyPassword(password, user.password_hash);
+      if (!passwordValid) {
+        return NextResponse.json(
+          { error: "Invalid email or password" },
+          { status: 401 }
         );
       }
 
@@ -262,6 +326,7 @@ function handleDemoMode(action: string, data: Record<string, unknown>) {
         geography,
         userName,
         userEmail,
+        password,
       } = data as {
         organizationName: string;
         industry: string;
@@ -270,16 +335,30 @@ function handleDemoMode(action: string, data: Record<string, unknown>) {
         geography?: string;
         userName: string;
         userEmail: string;
+        password: string;
       };
 
-      // Check if user already exists in demo
-      const existingUser = Array.from(demoUsers.values()).find(u => u.email === userEmail);
+      // Validate password
+      if (!password || password.length < 8) {
+        return NextResponse.json(
+          { error: "Password must be at least 8 characters" },
+          { status: 400 }
+        );
+      }
+
+      // Check if user already exists in demo (case-insensitive)
+      const existingUser = Array.from(demoUsers.values()).find(
+        u => u.email.toLowerCase() === userEmail.toLowerCase()
+      );
       if (existingUser) {
         return NextResponse.json(
           { error: "User with this email already exists" },
           { status: 400 }
         );
       }
+
+      // Hash password
+      const passwordHash = await hashPassword(password);
 
       // Create demo organization
       const orgId = `demo-org-${Date.now()}`;
@@ -296,7 +375,7 @@ function handleDemoMode(action: string, data: Record<string, unknown>) {
       // Generate session token
       const sessionToken = generateSessionToken();
 
-      // Create demo user
+      // Create demo user with password hash
       const userId = `demo-user-${Date.now()}`;
       const user = {
         id: userId,
@@ -305,6 +384,7 @@ function handleDemoMode(action: string, data: Record<string, unknown>) {
         organization_id: orgId,
         role: "admin",
         session_token: sessionToken,
+        password_hash: passwordHash,
       };
       demoUsers.set(userId, user);
 
