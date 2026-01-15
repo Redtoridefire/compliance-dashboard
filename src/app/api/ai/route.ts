@@ -377,16 +377,44 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("AI API error:", error);
 
-    // Check if it's an OpenAI API error
-    if (error instanceof Error && error.message.includes("API key")) {
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+
+    // Check for specific OpenAI API errors
+    if (errorMessage.includes("API key") || errorMessage.includes("OPENAI_API_KEY")) {
       return NextResponse.json(
-        { error: "AI service not configured. Please add your OpenAI API key." },
+        { error: "AI service not configured. Please add your OpenAI API key to environment variables." },
         { status: 503 }
       );
     }
 
+    if (errorMessage.includes("rate limit") || errorMessage.includes("429")) {
+      return NextResponse.json(
+        { error: "OpenAI rate limit exceeded. Please try again in a few moments." },
+        { status: 429 }
+      );
+    }
+
+    if (errorMessage.includes("quota") || errorMessage.includes("billing")) {
+      return NextResponse.json(
+        { error: "OpenAI API quota exceeded or billing issue. Please check your OpenAI account." },
+        { status: 402 }
+      );
+    }
+
+    if (errorMessage.includes("model") || errorMessage.includes("gpt-4")) {
+      return NextResponse.json(
+        { error: "AI model not available. Your OpenAI account may not have access to GPT-4." },
+        { status: 503 }
+      );
+    }
+
+    // Return detailed error in development, generic in production
     return NextResponse.json(
-      { error: "Internal server error" },
+      {
+        error: process.env.NODE_ENV === "development"
+          ? `AI error: ${errorMessage}`
+          : "AI service temporarily unavailable. Please try again later.",
+      },
       { status: 500 }
     );
   }

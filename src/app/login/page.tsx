@@ -6,11 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Shield, Loader2 } from "lucide-react";
+import { Shield, Loader2, Eye, EyeOff } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -23,7 +25,7 @@ export default function LoginPage() {
       const response = await fetch("/api/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "login", email }),
+        body: JSON.stringify({ action: "login", email, password }),
       });
 
       const data = await response.json();
@@ -40,32 +42,6 @@ export default function LoginPage() {
       setError("An error occurred. Please try again.");
     }
     setIsLoading(false);
-  };
-
-  const handleDemoLogin = async () => {
-    setIsLoading(true);
-    setError("");
-
-    try {
-      const response = await fetch("/api/auth", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "login", email: "demo@cybercomply.io" }),
-      });
-
-      const data = await response.json();
-
-      if (data.error) {
-        // If demo user doesn't exist, just redirect to demo mode
-        router.push("/dashboard?demo=true");
-        return;
-      }
-
-      localStorage.setItem("cybercomply_session", JSON.stringify(data.session));
-      router.push("/dashboard");
-    } catch (err) {
-      router.push("/dashboard?demo=true");
-    }
   };
 
   return (
@@ -94,6 +70,32 @@ export default function LoginPage() {
               />
             </div>
 
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-cyber-text-muted hover:text-cyber-text"
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
+                </button>
+              </div>
+            </div>
+
             {error && (
               <p className="text-sm text-cyber-danger">{error}</p>
             )}
@@ -106,27 +108,9 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-cyber-border"></div>
-            </div>
-            <div className="relative flex justify-center text-xs">
-              <span className="bg-cyber-surface px-2 text-cyber-text-muted">or</span>
-            </div>
-          </div>
-
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={handleDemoLogin}
-            disabled={isLoading}
-          >
-            Try Demo Mode
-          </Button>
-
           <p className="text-center text-sm text-cyber-text-muted mt-6">
             Don&apos;t have an account?{" "}
-            <a href="/" className="text-cyber-primary hover:underline">
+            <a href="/onboarding" className="text-cyber-primary hover:underline">
               Get Started
             </a>
           </p>

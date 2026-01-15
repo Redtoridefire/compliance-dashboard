@@ -16,6 +16,8 @@ import {
   ArrowRight,
   ArrowLeft,
   Loader2,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import { INDUSTRIES, COMPANY_SIZES, GEOGRAPHIES } from "@/lib/utils";
 
@@ -36,6 +38,7 @@ function OnboardingContent() {
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [frameworks, setFrameworks] = useState<Framework[]>([]);
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     organizationName: "",
     industry: initialIndustry,
@@ -44,6 +47,8 @@ function OnboardingContent() {
     geography: [] as string[],
     userName: "",
     userEmail: "",
+    password: "",
+    confirmPassword: "",
     selectedFrameworks: [] as string[],
   });
 
@@ -102,6 +107,12 @@ function OnboardingContent() {
   };
 
   const handleSubmit = async () => {
+    // Validate passwords match
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
     setIsLoading(true);
     try {
       const response = await fetch("/api/auth", {
@@ -116,6 +127,7 @@ function OnboardingContent() {
           geography: formData.geography,
           userName: formData.userName,
           userEmail: formData.userEmail,
+          password: formData.password,
         }),
       });
 
@@ -156,7 +168,12 @@ function OnboardingContent() {
       case 1:
         return formData.organizationName && formData.industry && formData.companySize;
       case 2:
-        return formData.userName && formData.userEmail;
+        return (
+          formData.userName &&
+          formData.userEmail &&
+          formData.password.length >= 8 &&
+          formData.password === formData.confirmPassword
+        );
       case 3:
         return formData.selectedFrameworks.length > 0;
       default:
@@ -303,12 +320,46 @@ function OnboardingContent() {
                 />
               </div>
 
-              <div className="bg-cyber-bg rounded-lg p-4 border border-cyber-border">
-                <p className="text-sm text-cyber-text-muted">
-                  <strong className="text-cyber-text">Note:</strong> This is a simplified auth
-                  system for the MVP. In production, use proper authentication (Supabase Auth,
-                  Auth0, etc.)
-                </p>
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Minimum 8 characters"
+                    value={formData.password}
+                    onChange={(e) => handleInputChange("password", e.target.value)}
+                    className="pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-cyber-text-muted hover:text-cyber-text"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
+                  </button>
+                </div>
+                {formData.password && formData.password.length < 8 && (
+                  <p className="text-xs text-cyber-warning">Password must be at least 8 characters</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Input
+                  id="confirmPassword"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Confirm your password"
+                  value={formData.confirmPassword}
+                  onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
+                />
+                {formData.confirmPassword && formData.password !== formData.confirmPassword && (
+                  <p className="text-xs text-cyber-danger">Passwords do not match</p>
+                )}
               </div>
             </CardContent>
           </Card>

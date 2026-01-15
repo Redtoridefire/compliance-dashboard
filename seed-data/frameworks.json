@@ -61,5 +61,212 @@
     "version": "2023 Revised",
     "applicable_industries": ["financial_services", "fintech", "banking", "insurance"],
     "documentation_url": "https://www.ftc.gov/business-guidance/privacy-security/gramm-leach-bliley-act"
+  },
+  {
+    "name": "HIPAA Security Rule",
+    "abbreviation": "HIPAA",
+    "category": "Healthcare",
+    "description": "Health Insurance Portability and Accountability Act Security Rule establishes national standards to protect individuals' electronic personal health information (ePHI) that is created, received, used, or maintained by a covered entity.",
+    "version": "2013 Omnibus",
+    "applicable_industries": ["healthcare", "insurance", "technology"],
+    "documentation_url": "https://www.hhs.gov/hipaa/for-professionals/security/index.html"
+  },
+  {
+    "name": "GDPR",
+    "abbreviation": "GDPR",
+    "category": "Privacy",
+    "description": "General Data Protection Regulation is a comprehensive data protection law in the EU that governs how organizations collect, process, store, and transfer personal data of EU residents.",
+    "version": "2018",
+    "applicable_industries": ["financial_services", "fintech", "banking", "insurance", "healthcare", "technology", "retail", "manufacturing", "government", "other"],
+    "documentation_url": "https://gdpr.eu/"
+  },
+  {
+    "name": "CCPA/CPRA",
+    "abbreviation": "CCPA",
+    "category": "Privacy",
+    "description": "California Consumer Privacy Act and California Privacy Rights Act give California residents rights regarding their personal information and impose obligations on businesses that collect personal data.",
+    "version": "2023 CPRA",
+    "applicable_industries": ["financial_services", "fintech", "technology", "healthcare", "retail", "other"],
+    "documentation_url": "https://oag.ca.gov/privacy/ccpa"
+  },
+  {
+    "name": "CIS Controls v8",
+    "abbreviation": "CIS Controls",
+    "category": "General",
+    "description": "Center for Internet Security Critical Security Controls are a prioritized set of actions to protect organizations and data from known cyber attack vectors.",
+    "version": "8.0",
+    "applicable_industries": ["financial_services", "fintech", "banking", "insurance", "healthcare", "technology", "retail", "manufacturing", "government", "other"],
+    "documentation_url": "https://www.cisecurity.org/controls"
+  },
+  {
+    "name": "FedRAMP",
+    "abbreviation": "FedRAMP",
+    "category": "Government",
+    "description": "Federal Risk and Authorization Management Program provides a standardized approach to security assessment, authorization, and continuous monitoring for cloud products and services used by federal agencies.",
+    "version": "Rev 5",
+    "applicable_industries": ["government", "technology"],
+    "documentation_url": "https://www.fedramp.gov/"
+  },
+  {
+    "name": "CMMC 2.0",
+    "abbreviation": "CMMC",
+    "category": "Government",
+    "description": "Cybersecurity Maturity Model Certification is a unifying standard for implementing cybersecurity across the Defense Industrial Base (DIB) to protect controlled unclassified information (CUI).",
+    "version": "2.0",
+    "applicable_industries": ["government", "manufacturing", "technology"],
+    "documentation_url": "https://dodcio.defense.gov/CMMC/"
+  },
+  {
+    "name": "SOX IT Controls",
+    "abbreviation": "SOX",
+    "category": "Financial Services",
+    "description": "Sarbanes-Oxley Act IT General Controls (ITGCs) are controls that apply to all systems components, processes, and data for a given organization or IT environment.",
+    "version": "2002",
+    "applicable_industries": ["financial_services", "banking", "insurance", "retail", "manufacturing"],
+    "documentation_url": "https://www.sec.gov/spotlight/sarbanes-oxley.htm"
+  },
+  {
+    "name": "FFIEC IT Examination Handbook",
+    "abbreviation": "FFIEC",
+    "category": "Financial Services",
+    "description": "Federal Financial Institutions Examination Council IT Examination Handbook provides guidance on IT risk management for financial institutions.",
+    "version": "2023",
+    "applicable_industries": ["financial_services", "banking", "fintech"],
+    "documentation_url": "https://ithandbook.ffiec.gov/"
+  },
+  {
+    "name": "NIST 800-53 Rev 5",
+    "abbreviation": "NIST 800-53",
+    "category": "Government",
+    "description": "Security and Privacy Controls for Information Systems and Organizations. Provides a catalog of security and privacy controls for federal information systems.",
+    "version": "Rev 5",
+    "applicable_industries": ["government", "financial_services", "healthcare", "technology"],
+    "documentation_url": "https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final"
+  },
+  {
+    "name": "NIST 800-171 Rev 2",
+    "abbreviation": "NIST 800-171",
+    "category": "Government",
+    "description": "Protecting Controlled Unclassified Information in Nonfederal Systems and Organizations. Security requirements for protecting CUI in nonfederal systems.",
+    "version": "Rev 2",
+    "applicable_industries": ["government", "manufacturing", "technology"],
+    "documentation_url": "https://csrc.nist.gov/publications/detail/sp/800-171/rev-2/final"
+  },
+  {
+    "name": "ISO 27701",
+    "abbreviation": "ISO 27701",
+    "category": "Privacy",
+    "description": "Privacy Information Management System (PIMS) extension to ISO 27001. Provides guidance for establishing, implementing, maintaining, and continually improving a PIMS.",
+    "version": "2019",
+    "applicable_industries": ["financial_services", "fintech", "healthcare", "technology", "retail", "other"],
+    "documentation_url": "https://www.iso.org/standard/71670.html"
+  },
+  {
+    "name": "COBIT 2019",
+    "abbreviation": "COBIT",
+    "category": "General",
+    "description": "Control Objectives for Information and Related Technologies is a framework for the governance and management of enterprise IT.",
+    "version": "2019",
+    "applicable_industries": ["financial_services", "banking", "insurance", "healthcare", "technology", "retail", "manufacturing", "government", "other"],
+    "documentation_url": "https://www.isaca.org/resources/cobit"
+  },
+  {
+    "name": "EU AI Act",
+    "abbreviation": "EU AI Act",
+    "category": "AI Governance",
+    "description": "European Union Artificial Intelligence Act establishes rules for AI systems based on their risk level, with strict requirements for high-risk AI applications.",
+    "version": "2024",
+    "applicable_industries": ["financial_services", "fintech", "healthcare", "technology", "manufacturing", "other"],
+    "documentation_url": "https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai"
+  },
+  {
+    "name": "DORA",
+    "abbreviation": "DORA",
+    "category": "Financial Services",
+    "description": "Digital Operational Resilience Act is an EU regulation on digital operational resilience for the financial sector, covering ICT risk management, incident reporting, and third-party risk.",
+    "version": "2023",
+    "applicable_industries": ["financial_services", "fintech", "banking", "insurance"],
+    "documentation_url": "https://www.digital-operational-resilience-act.com/"
+  },
+  {
+    "name": "StateRAMP",
+    "abbreviation": "StateRAMP",
+    "category": "Government",
+    "description": "State Risk and Authorization Management Program provides a standardized approach to security assessment and authorization for cloud products used by state and local governments.",
+    "version": "2023",
+    "applicable_industries": ["government", "technology"],
+    "documentation_url": "https://stateramp.org/"
+  },
+  {
+    "name": "HITRUST CSF",
+    "abbreviation": "HITRUST",
+    "category": "Healthcare",
+    "description": "Health Information Trust Alliance Common Security Framework integrates and harmonizes requirements from existing standards and regulations into a single overarching security framework.",
+    "version": "v11",
+    "applicable_industries": ["healthcare", "insurance", "technology"],
+    "documentation_url": "https://hitrustalliance.net/product-tool/hitrust-csf/"
+  },
+  {
+    "name": "NERC CIP",
+    "abbreviation": "NERC CIP",
+    "category": "Energy",
+    "description": "North American Electric Reliability Corporation Critical Infrastructure Protection standards for the security of the Bulk Electric System.",
+    "version": "Version 7",
+    "applicable_industries": ["energy", "manufacturing", "government"],
+    "documentation_url": "https://www.nerc.com/pa/Stand/Pages/CIPStandards.aspx"
+  },
+  {
+    "name": "IEC 62443",
+    "abbreviation": "IEC 62443",
+    "category": "Industrial",
+    "description": "Industrial communication networks - IT security for networks and systems. Comprehensive framework for securing Industrial Automation and Control Systems (IACS).",
+    "version": "2023",
+    "applicable_industries": ["manufacturing", "energy", "technology"],
+    "documentation_url": "https://www.iec.ch/cyber-security"
+  },
+  {
+    "name": "CSA STAR",
+    "abbreviation": "CSA STAR",
+    "category": "Cloud Security",
+    "description": "Cloud Security Alliance Security Trust Assurance and Risk program provides a cloud security assurance program through self-assessment, third-party audit, and continuous monitoring.",
+    "version": "Level 2",
+    "applicable_industries": ["technology", "financial_services", "healthcare", "other"],
+    "documentation_url": "https://cloudsecurityalliance.org/star/"
+  },
+  {
+    "name": "SWIFT Customer Security Programme",
+    "abbreviation": "SWIFT CSP",
+    "category": "Financial Services",
+    "description": "SWIFT Customer Security Programme helps financial institutions strengthen their defenses against cyber threats. Includes mandatory and advisory security controls.",
+    "version": "v2024",
+    "applicable_industries": ["financial_services", "banking", "fintech"],
+    "documentation_url": "https://www.swift.com/myswift/customer-security-programme-csp"
+  },
+  {
+    "name": "NY SHIELD Act",
+    "abbreviation": "NY SHIELD",
+    "category": "Privacy",
+    "description": "New York Stop Hacks and Improve Electronic Data Security Act requires businesses to implement reasonable safeguards to protect private information of New York residents.",
+    "version": "2020",
+    "applicable_industries": ["financial_services", "fintech", "healthcare", "technology", "retail", "other"],
+    "documentation_url": "https://ag.ny.gov/resources/organizations/data-breach-reporting/shield-act"
+  },
+  {
+    "name": "SEC Cybersecurity Rules",
+    "abbreviation": "SEC Cyber",
+    "category": "Financial Services",
+    "description": "SEC rules requiring public companies to disclose material cybersecurity incidents and describe their cybersecurity risk management, strategy, and governance.",
+    "version": "2023",
+    "applicable_industries": ["financial_services", "banking", "insurance", "technology", "retail", "manufacturing"],
+    "documentation_url": "https://www.sec.gov/rules/final/2023/33-11216.pdf"
+  },
+  {
+    "name": "TISAX",
+    "abbreviation": "TISAX",
+    "category": "Automotive",
+    "description": "Trusted Information Security Assessment Exchange is an assessment and exchange mechanism for information security in the automotive industry.",
+    "version": "6.0",
+    "applicable_industries": ["manufacturing", "technology"],
+    "documentation_url": "https://enx.com/en-us/tisax/"
   }
 ]

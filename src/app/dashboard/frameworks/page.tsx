@@ -29,6 +29,8 @@ export default function FrameworksPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadingFramework, setLoadingFramework] = useState<string | null>(null);
   const [session, setSession] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const currentSession = getSession();
@@ -51,11 +53,17 @@ export default function FrameworksPage() {
   };
 
   const toggleFramework = async (frameworkId: string, isSelected: boolean) => {
-    if (!session?.organizationId) return;
+    if (!session?.organizationId) {
+      setError("No session found. Please log in again.");
+      return;
+    }
 
     setLoadingFramework(frameworkId);
+    setError(null);
+    setSuccessMessage(null);
+
     try {
-      await fetch("/api/frameworks", {
+      const response = await fetch("/api/frameworks", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -64,9 +72,21 @@ export default function FrameworksPage() {
           action: isSelected ? "unselect" : "select",
         }),
       });
-      fetchFrameworks(session.organizationId);
-    } catch (error) {
-      console.error("Error toggling framework:", error);
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || "Failed to update framework selection");
+        setLoadingFramework(null);
+        return;
+      }
+
+      setSuccessMessage(isSelected ? "Framework removed" : "Framework added successfully");
+      setTimeout(() => setSuccessMessage(null), 3000);
+      await fetchFrameworks(session.organizationId);
+    } catch (err) {
+      console.error("Error toggling framework:", err);
+      setError("Network error. Please try again.");
     }
     setLoadingFramework(null);
   };
@@ -111,6 +131,18 @@ export default function FrameworksPage() {
           {selectedFrameworks.length} Selected
         </Badge>
       </div>
+
+      {/* Error/Success Messages */}
+      {error && (
+        <div className="mb-4 p-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400">
+          {error}
+        </div>
+      )}
+      {successMessage && (
+        <div className="mb-4 p-4 bg-green-500/10 border border-green-500/50 rounded-lg text-green-400">
+          {successMessage}
+        </div>
+      )}
 
       {/* Search and Filter */}
       <div className="flex flex-col md:flex-row gap-4 mb-6">
