@@ -247,6 +247,228 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ valid: true, user });
       }
 
+      case "change_password": {
+        const { userId, currentPassword, newPassword } = data;
+
+        if (!newPassword || newPassword.length < 8) {
+          return NextResponse.json(
+            { error: "New password must be at least 8 characters" },
+            { status: 400 }
+          );
+        }
+
+        // Get user
+        const { data: user, error: userError } = await supabase
+          .from("users")
+          .select("id, password_hash")
+          .eq("id", userId)
+          .single();
+
+        if (userError || !user) {
+          return NextResponse.json(
+            { error: "User not found" },
+            { status: 404 }
+          );
+        }
+
+        // Verify current password (if user has one set)
+        if (user.password_hash) {
+          const passwordValid = await verifyPassword(currentPassword, user.password_hash);
+          if (!passwordValid) {
+            return NextResponse.json(
+              { error: "Current password is incorrect" },
+              { status: 401 }
+            );
+          }
+        }
+
+        // Hash new password
+        const newPasswordHash = await hashPassword(newPassword);
+
+        // Update password
+        const { error: updateError } = await supabase
+          .from("users")
+          .update({ password_hash: newPasswordHash })
+          .eq("id", userId);
+
+        if (updateError) {
+          return NextResponse.json(
+            { error: "Failed to update password" },
+            { status: 500 }
+          );
+        }
+
+        return NextResponse.json({ success: true, message: "Password updated successfully" });
+      }
+
+      case "delete_account": {
+        const { userId, password, organizationId } = data;
+
+        // Get user to verify password
+        const { data: user, error: userError } = await supabase
+          .from("users")
+          .select("id, password_hash, organization_id")
+          .eq("id", userId)
+          .single();
+
+        if (userError || !user) {
+          return NextResponse.json(
+            { error: "User not found" },
+            { status: 404 }
+          );
+        }
+
+        // Verify password
+        if (user.password_hash) {
+          const passwordValid = await verifyPassword(password, user.password_hash);
+          if (!passwordValid) {
+            return NextResponse.json(
+              { error: "Password is incorrect" },
+              { status: 401 }
+            );
+          }
+        }
+
+        // Delete user's data in order (respecting foreign keys)
+        const orgId = organizationId || user.organization_id;
+
+        // Delete control implementations
+        await supabase
+          .from("control_implementations")
+          .delete()
+          .eq("organization_id", orgId);
+
+        // Delete gap analysis
+        await supabase
+          .from("gap_analysis")
+          .delete()
+          .eq("organization_id", orgId);
+
+        // Delete organization frameworks
+        await supabase
+          .from("organization_frameworks")
+          .delete()
+          .eq("organization_id", orgId);
+
+        // Delete AI interactions
+        await supabase
+          .from("ai_interactions")
+          .delete()
+          .eq("organization_id", orgId);
+
+        // Delete user
+        await supabase
+          .from("users")
+          .delete()
+          .eq("id", userId);
+
+        // Check if there are other users in the organization
+        const { data: remainingUsers } = await supabase
+          .from("users")
+          .select("id")
+          .eq("organization_id", orgId);
+
+        // If no users left, delete organization
+        if (!remainingUsers || remainingUsers.length === 0) {
+          await supabase
+            .from("organizations")
+            .delete()
+            .eq("id", orgId);
+        }
+
+        return NextResponse.json({ success: true, message: "Account deleted successfully" });
+      }
+
+      case "request_password_reset": {
+        const { email } = data;
+
+        // Find user by email
+        const { data: user, error: userError } = await supabase
+          .from("users")
+          .select("id, email")
+          .ilike("email", email)
+          .single();
+
+        if (userError || !user) {
+          // Don't reveal if email exists or not
+          return NextResponse.json({
+            success: true,
+            message: "If an account exists with this email, a reset link will be sent."
+          });
+        }
+
+        // Generate reset token (simple implementation - in production use secure tokens)
+        const resetToken = generateSessionToken();
+        const resetExpiry = new Date(Date.now() + 3600000).toISOString(); // 1 hour
+
+        // Store reset token
+        await supabase
+          .from("users")
+          .update({
+            reset_token: resetToken,
+            reset_token_expiry: resetExpiry
+          })
+          .eq("id", user.id);
+
+        // In a real app, send email here. For now, return token in response (for testing)
+        console.log(`[Auth] Password reset token for ${email}: ${resetToken}`);
+
+        return NextResponse.json({
+          success: true,
+          message: "If an account exists with this email, a reset link will be sent.",
+          // Remove this in production - only for testing
+          debug: { resetToken, email: user.email }
+        });
+      }
+
+      case "reset_password": {
+        const { token, newPassword } = data;
+
+        if (!newPassword || newPassword.length < 8) {
+          return NextResponse.json(
+            { error: "Password must be at least 8 characters" },
+            { status: 400 }
+          );
+        }
+
+        // Find user with this reset token
+        const { data: user, error: userError } = await supabase
+          .from("users")
+          .select("id, reset_token_expiry")
+          .eq("reset_token", token)
+          .single();
+
+        if (userError || !user) {
+          return NextResponse.json(
+            { error: "Invalid or expired reset token" },
+            { status: 400 }
+          );
+        }
+
+        // Check if token is expired
+        if (user.reset_token_expiry && new Date(user.reset_token_expiry) < new Date()) {
+          return NextResponse.json(
+            { error: "Reset token has expired. Please request a new one." },
+            { status: 400 }
+          );
+        }
+
+        // Hash new password
+        const passwordHash = await hashPassword(newPassword);
+
+        // Update password and clear reset token
+        await supabase
+          .from("users")
+          .update({
+            password_hash: passwordHash,
+            reset_token: null,
+            reset_token_expiry: null
+          })
+          .eq("id", user.id);
+
+        return NextResponse.json({ success: true, message: "Password reset successfully" });
+      }
+
       default:
         return NextResponse.json(
           { error: "Invalid action" },

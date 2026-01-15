@@ -100,6 +100,15 @@ export default function LoginPage() {
               <p className="text-sm text-cyber-danger">{error}</p>
             )}
 
+            <div className="flex justify-end">
+              <a
+                href="/forgot-password"
+                className="text-sm text-cyber-primary hover:underline"
+              >
+                Forgot password?
+              </a>
+            </div>
+
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? (
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />

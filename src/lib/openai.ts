@@ -1,9 +1,26 @@
 import OpenAI from "openai";
 import type { Control, Framework, ControlImplementation, Organization } from "@/types";
 
+// Model configuration - use gpt-3.5-turbo for wider availability
+// gpt-4 requires specific API access
+const DEFAULT_MODEL = process.env.OPENAI_MODEL || "gpt-3.5-turbo";
+
 // Check if OpenAI API is configured
 export function isOpenAIConfigured(): boolean {
-  return Boolean(process.env.OPENAI_API_KEY);
+  const apiKey = process.env.OPENAI_API_KEY;
+  const configured = Boolean(apiKey && apiKey.length > 0 && apiKey !== "undefined");
+
+  // Log for debugging (server-side only)
+  if (typeof window === "undefined") {
+    console.log("[OpenAI Config]", {
+      configured,
+      hasKey: Boolean(apiKey),
+      keyPrefix: apiKey ? apiKey.substring(0, 10) + "..." : "(not set)",
+      model: DEFAULT_MODEL,
+    });
+  }
+
+  return configured;
 }
 
 // Create OpenAI client (server-side only)
@@ -13,6 +30,11 @@ export function createOpenAIClient() {
     throw new Error("OPENAI_API_KEY environment variable is not set");
   }
   return new OpenAI({ apiKey });
+}
+
+// Get the model to use
+export function getModel(): string {
+  return DEFAULT_MODEL;
 }
 
 // Gap Analysis Recommendation
@@ -56,7 +78,7 @@ ${input.frameworks.map((f) => `- ${f.framework.name} (${f.framework.abbreviation
 Be concise, specific, and actionable. Focus on practical implementation in a financial services context.`;
 
   const completion = await openai.chat.completions.create({
-    model: "gpt-4",
+    model: getModel(),
     messages: [{ role: "user", content: prompt }],
     temperature: 0.7,
     max_tokens: 800,
@@ -99,7 +121,7 @@ Prioritize mandatory regulatory frameworks first, then industry-standard framewo
 Format your response as a structured list.`;
 
   const completion = await openai.chat.completions.create({
-    model: "gpt-4",
+    model: getModel(),
     messages: [{ role: "user", content: prompt }],
     temperature: 0.7,
     max_tokens: 800,
@@ -144,7 +166,7 @@ Respond in JSON format:
 }`;
 
   const completion = await openai.chat.completions.create({
-    model: "gpt-4",
+    model: getModel(),
     messages: [{ role: "user", content: prompt }],
     temperature: 0.3,
     max_tokens: 200,
@@ -206,7 +228,7 @@ export async function generateChatResponse(
 - If you don't know something specific about their implementation, ask clarifying questions`;
 
   const completion = await openai.chat.completions.create({
-    model: "gpt-4",
+    model: getModel(),
     messages: [
       { role: "system", content: systemPrompt },
       ...messages.map((m) => ({

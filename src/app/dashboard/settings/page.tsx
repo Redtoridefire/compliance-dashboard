@@ -28,7 +28,11 @@ import {
   AlertCircle,
   Shield,
   Trash2,
-  RefreshCw
+  RefreshCw,
+  Lock,
+  Eye,
+  EyeOff,
+  UserX
 } from "lucide-react";
 
 interface Organization {
@@ -65,6 +69,21 @@ export default function SettingsPage() {
   const [apiKey, setApiKey] = useState("");
   const [showApiKey, setShowApiKey] = useState(false);
 
+  // Password change state
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [showPasswords, setShowPasswords] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
+  const [passwordSuccess, setPasswordSuccess] = useState("");
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
+
+  // Delete account state
+  const [deletePassword, setDeletePassword] = useState("");
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isDeletingAccount, setIsDeletingAccount] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
+
   useEffect(() => {
     loadSettings();
   }, []);
@@ -75,14 +94,15 @@ export default function SettingsPage() {
       const sessionStr = localStorage.getItem("cybercomply_session");
       if (sessionStr) {
         const session = JSON.parse(sessionStr);
+        // Handle both camelCase and snake_case field names
         setOrganization({
-          id: session.organization_id || "",
+          id: session.organizationId || session.organization_id || "",
           name: session.organization_name || "",
           industry: session.industry || "financial_services",
           size: session.size || "small"
         });
         setUser({
-          id: session.user_id || "",
+          id: session.userId || session.user_id || "",
           email: session.email || "",
           name: session.name || "",
           role: session.role || "admin"
@@ -92,6 +112,90 @@ export default function SettingsPage() {
       console.error("Error loading settings:", error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleChangePassword = async () => {
+    setPasswordError("");
+    setPasswordSuccess("");
+
+    if (newPassword.length < 8) {
+      setPasswordError("New password must be at least 8 characters");
+      return;
+    }
+
+    if (newPassword !== confirmNewPassword) {
+      setPasswordError("New passwords do not match");
+      return;
+    }
+
+    setIsChangingPassword(true);
+
+    try {
+      const response = await fetch("/api/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "change_password",
+          userId: user.id,
+          currentPassword,
+          newPassword,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setPasswordError(data.error || "Failed to change password");
+      } else {
+        setPasswordSuccess("Password changed successfully!");
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmNewPassword("");
+        setTimeout(() => setPasswordSuccess(""), 5000);
+      }
+    } catch (error) {
+      setPasswordError("Network error. Please try again.");
+    }
+
+    setIsChangingPassword(false);
+  };
+
+  const handleDeleteAccount = async () => {
+    setDeleteError("");
+
+    if (!deletePassword) {
+      setDeleteError("Please enter your password to confirm");
+      return;
+    }
+
+    setIsDeletingAccount(true);
+
+    try {
+      const response = await fetch("/api/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "delete_account",
+          userId: user.id,
+          organizationId: organization.id,
+          password: deletePassword,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setDeleteError(data.error || "Failed to delete account");
+        setIsDeletingAccount(false);
+      } else {
+        // Clear session and redirect
+        localStorage.clear();
+        window.location.href = "/?deleted=true";
+      }
+    } catch (error) {
+      setDeleteError("Network error. Please try again.");
+      setIsDeletingAccount(false);
     }
   };
 
@@ -395,6 +499,95 @@ export default function SettingsPage() {
               </div>
             </CardContent>
           </Card>
+
+          {/* Change Password Card */}
+          <Card className="border-cyber-border bg-cyber-surface mt-6">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Lock className="w-5 h-5" />
+                Change Password
+              </CardTitle>
+              <CardDescription>
+                Update your account password
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="currentPassword">Current Password</Label>
+                  <div className="relative">
+                    <Input
+                      id="currentPassword"
+                      type={showPasswords ? "text" : "password"}
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                      placeholder="Enter current password"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="newPassword">New Password</Label>
+                  <Input
+                    id="newPassword"
+                    type={showPasswords ? "text" : "password"}
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="Min 8 characters"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="confirmNewPassword">Confirm New Password</Label>
+                  <Input
+                    id="confirmNewPassword"
+                    type={showPasswords ? "text" : "password"}
+                    value={confirmNewPassword}
+                    onChange={(e) => setConfirmNewPassword(e.target.value)}
+                    placeholder="Confirm new password"
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="showPasswords"
+                  checked={showPasswords}
+                  onChange={(e) => setShowPasswords(e.target.checked)}
+                  className="rounded border-cyber-border"
+                />
+                <Label htmlFor="showPasswords" className="text-sm cursor-pointer">
+                  Show passwords
+                </Label>
+              </div>
+
+              {passwordError && (
+                <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/50 text-red-400 text-sm">
+                  {passwordError}
+                </div>
+              )}
+
+              {passwordSuccess && (
+                <div className="p-3 rounded-lg bg-green-500/10 border border-green-500/50 text-green-400 text-sm flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4" />
+                  {passwordSuccess}
+                </div>
+              )}
+
+              <div className="flex justify-end">
+                <Button
+                  onClick={handleChangePassword}
+                  disabled={isChangingPassword || !currentPassword || !newPassword || !confirmNewPassword}
+                >
+                  {isChangingPassword ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <Lock className="w-4 h-4 mr-2" />
+                  )}
+                  Change Password
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
 
         {/* Integrations */}
@@ -557,6 +750,81 @@ export default function SettingsPage() {
                   <Trash2 className="w-4 h-4 mr-2" />
                   Clear Data
                 </Button>
+              </div>
+
+              {/* Delete Account */}
+              <div className="p-4 rounded-lg border border-cyber-danger/30 bg-cyber-bg">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <p className="font-medium flex items-center gap-2">
+                      <UserX className="w-4 h-4 text-cyber-danger" />
+                      Delete Account
+                    </p>
+                    <p className="text-sm text-cyber-text-muted">
+                      Permanently delete your account and all associated data
+                    </p>
+                  </div>
+                  <Button
+                    variant="outline"
+                    className="border-cyber-danger text-cyber-danger hover:bg-cyber-danger hover:text-white"
+                    onClick={() => setShowDeleteConfirm(!showDeleteConfirm)}
+                  >
+                    <Trash2 className="w-4 h-4 mr-2" />
+                    Delete Account
+                  </Button>
+                </div>
+
+                {showDeleteConfirm && (
+                  <div className="mt-4 p-4 rounded-lg border border-cyber-danger bg-cyber-danger/10">
+                    <p className="text-sm text-cyber-danger font-medium mb-3">
+                      This action cannot be undone. All your data will be permanently deleted.
+                    </p>
+                    <div className="space-y-3">
+                      <div className="space-y-1">
+                        <Label htmlFor="deletePassword" className="text-sm">
+                          Enter your password to confirm:
+                        </Label>
+                        <Input
+                          id="deletePassword"
+                          type="password"
+                          value={deletePassword}
+                          onChange={(e) => setDeletePassword(e.target.value)}
+                          placeholder="Your password"
+                          className="max-w-xs"
+                        />
+                      </div>
+                      {deleteError && (
+                        <p className="text-sm text-cyber-danger">{deleteError}</p>
+                      )}
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setShowDeleteConfirm(false);
+                            setDeletePassword("");
+                            setDeleteError("");
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          size="sm"
+                          className="bg-cyber-danger hover:bg-cyber-danger/90"
+                          onClick={handleDeleteAccount}
+                          disabled={isDeletingAccount}
+                        >
+                          {isDeletingAccount ? (
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          ) : (
+                            <Trash2 className="w-4 h-4 mr-2" />
+                          )}
+                          Permanently Delete
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="flex items-center justify-between p-4 rounded-lg border border-cyber-border bg-cyber-bg">
