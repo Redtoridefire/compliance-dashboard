@@ -62,17 +62,26 @@ export default function ForgotPasswordPage() {
             <div className="space-y-4">
               <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/50 text-center">
                 <CheckCircle2 className="w-8 h-8 text-green-400 mx-auto mb-2" />
-                <p className="text-green-400 font-medium">Check your email</p>
+                <p className="text-green-400 font-medium">Request Received</p>
                 <p className="text-sm text-cyber-text-muted mt-1">
                   If an account exists with {email}, you&apos;ll receive a password reset link.
                 </p>
               </div>
 
-              {/* Debug info - remove in production */}
+              {/* Show message if no email service is configured (production mode) */}
+              {!debugToken && (
+                <div className="p-4 rounded-lg bg-blue-500/10 border border-blue-500/50">
+                  <p className="text-sm text-blue-400">
+                    <strong>Note:</strong> Email delivery requires configuration. Please contact your system administrator for password reset assistance.
+                  </p>
+                </div>
+              )}
+
+              {/* Debug info - only shown in development mode when API returns token */}
               {debugToken && (
                 <div className="p-4 rounded-lg bg-yellow-500/10 border border-yellow-500/50">
                   <p className="text-xs text-yellow-400 font-mono break-all">
-                    <strong>Dev Mode - Reset Token:</strong><br />
+                    <strong>Development Mode:</strong><br />
                     {debugToken}
                   </p>
                   <a

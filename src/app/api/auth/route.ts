@@ -410,14 +410,18 @@ export async function POST(request: NextRequest) {
           })
           .eq("id", user.id);
 
-        // In a real app, send email here. For now, return token in response (for testing)
+        // In production, send email here using a service like SendGrid, Resend, or AWS SES
+        // For now, log the token (only visible in server logs)
         console.log(`[Auth] Password reset token for ${email}: ${resetToken}`);
+
+        // Only include debug info in development mode
+        const isDev = process.env.NODE_ENV === "development";
 
         return NextResponse.json({
           success: true,
           message: "If an account exists with this email, a reset link will be sent.",
-          // Remove this in production - only for testing
-          debug: { resetToken, email: user.email }
+          // Only return token in development - never in production
+          ...(isDev && { debug: { resetToken, email: user.email } })
         });
       }
 
