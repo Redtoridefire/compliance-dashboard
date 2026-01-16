@@ -5,13 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Shield, Loader2, ArrowLeft, Mail, CheckCircle2 } from "lucide-react";
+import { Shield, Loader2, ArrowLeft, Mail, CheckCircle2, AlertCircle } from "lucide-react";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
   const [debugToken, setDebugToken] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -20,10 +21,17 @@ export default function ForgotPasswordPage() {
     setError("");
 
     try {
+      // Get the current base URL for the reset link
+      const baseUrl = window.location.origin;
+
       const response = await fetch("/api/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "request_password_reset", email }),
+        body: JSON.stringify({
+          action: "request_password_reset",
+          email,
+          baseUrl
+        }),
       });
 
       const data = await response.json();
@@ -32,7 +40,8 @@ export default function ForgotPasswordPage() {
         setError(data.error);
       } else {
         setSuccess(true);
-        // For testing - remove in production
+        setEmailSent(data.emailSent || false);
+        // For testing in development mode
         if (data.debug?.resetToken) {
           setDebugToken(data.debug.resetToken);
         }
@@ -60,19 +69,29 @@ export default function ForgotPasswordPage() {
         <CardContent>
           {success ? (
             <div className="space-y-4">
-              <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/50 text-center">
-                <CheckCircle2 className="w-8 h-8 text-green-400 mx-auto mb-2" />
-                <p className="text-green-400 font-medium">Request Received</p>
-                <p className="text-sm text-cyber-text-muted mt-1">
-                  If an account exists with {email}, you&apos;ll receive a password reset link.
-                </p>
-              </div>
+              {emailSent ? (
+                <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/50 text-center">
+                  <CheckCircle2 className="w-8 h-8 text-green-400 mx-auto mb-2" />
+                  <p className="text-green-400 font-medium">Check Your Email</p>
+                  <p className="text-sm text-cyber-text-muted mt-1">
+                    We&apos;ve sent a password reset link to {email}. The link will expire in 1 hour.
+                  </p>
+                </div>
+              ) : (
+                <div className="p-4 rounded-lg bg-yellow-500/10 border border-yellow-500/50 text-center">
+                  <AlertCircle className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
+                  <p className="text-yellow-400 font-medium">Request Received</p>
+                  <p className="text-sm text-cyber-text-muted mt-1">
+                    If an account exists with {email}, a reset link would be sent. However, email delivery is not currently configured.
+                  </p>
+                </div>
+              )}
 
-              {/* Show message if no email service is configured (production mode) */}
-              {!debugToken && (
+              {/* Show contact info if email not sent */}
+              {!emailSent && !debugToken && (
                 <div className="p-4 rounded-lg bg-blue-500/10 border border-blue-500/50">
                   <p className="text-sm text-blue-400">
-                    <strong>Note:</strong> Email delivery requires configuration. Please contact your system administrator for password reset assistance.
+                    <strong>Need help?</strong> Please contact your system administrator for password reset assistance.
                   </p>
                 </div>
               )}

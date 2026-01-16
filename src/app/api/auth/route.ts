@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient, isSupabaseConfigured } from "@/lib/supabase";
 import { generateSessionToken } from "@/lib/utils";
+import { sendPasswordResetEmail, isEmailConfigured } from "@/lib/email";
 import bcrypt from "bcryptjs";
 
 // Demo mode storage (in-memory for demo purposes)
@@ -380,7 +381,7 @@ export async function POST(request: NextRequest) {
       }
 
       case "request_password_reset": {
-        const { email } = data;
+        const { email, baseUrl: clientBaseUrl } = data;
 
         // Find user by email
         const { data: user, error: userError } = await supabase
@@ -393,7 +394,8 @@ export async function POST(request: NextRequest) {
           // Don't reveal if email exists or not
           return NextResponse.json({
             success: true,
-            message: "If an account exists with this email, a reset link will be sent."
+            message: "If an account exists with this email, a reset link will be sent.",
+            emailSent: false
           });
         }
 
@@ -410,8 +412,24 @@ export async function POST(request: NextRequest) {
           })
           .eq("id", user.id);
 
-        // In production, send email here using a service like SendGrid, Resend, or AWS SES
-        // For now, log the token (only visible in server logs)
+        // Get base URL for reset link
+        const baseUrl = clientBaseUrl || process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+
+        // Try to send email if configured
+        let emailSent = false;
+        if (isEmailConfigured()) {
+          const emailResult = await sendPasswordResetEmail({
+            to: user.email,
+            resetToken,
+            baseUrl,
+          });
+          emailSent = emailResult.success;
+          if (!emailResult.success) {
+            console.warn(`[Auth] Failed to send reset email: ${emailResult.error}`);
+          }
+        }
+
+        // Log token for debugging (only visible in server logs)
         console.log(`[Auth] Password reset token for ${email}: ${resetToken}`);
 
         // Only include debug info in development mode
@@ -420,6 +438,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({
           success: true,
           message: "If an account exists with this email, a reset link will be sent.",
+          emailSent,
           // Only return token in development - never in production
           ...(isDev && { debug: { resetToken, email: user.email } })
         });
