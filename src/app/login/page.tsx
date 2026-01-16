@@ -1,20 +1,69 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Shield, Loader2, Eye, EyeOff } from "lucide-react";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [checkingSession, setCheckingSession] = useState(true);
+
+  // Check for existing valid session on mount
+  useEffect(() => {
+    const checkExistingSession = async () => {
+      try {
+        const sessionStr = localStorage.getItem("cybercomply_session");
+        if (sessionStr) {
+          const session = JSON.parse(sessionStr);
+          const userId = session.userId || session.user_id;
+          const organizationId = session.organizationId || session.organization_id;
+          const sessionToken = session.sessionToken || session.session_token;
+
+          // If session has required fields, validate it
+          if (userId && organizationId && sessionToken) {
+            try {
+              const response = await fetch("/api/auth", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  action: "validate",
+                  sessionToken: sessionToken,
+                }),
+              });
+              const data = await response.json();
+
+              if (data.valid) {
+                // Valid session exists, redirect to dashboard
+                const redirect = searchParams.get("redirect") || "/dashboard";
+                router.replace(redirect);
+                return;
+              }
+            } catch {
+              // Validation failed, continue to clear session
+            }
+          }
+          // Invalid or incomplete session, clear it
+          localStorage.removeItem("cybercomply_session");
+        }
+      } catch {
+        // Error parsing session, clear it
+        localStorage.removeItem("cybercomply_session");
+      }
+      setCheckingSession(false);
+    };
+
+    checkExistingSession();
+  }, [router, searchParams]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,12 +86,28 @@ export default function LoginPage() {
       }
 
       localStorage.setItem("cybercomply_session", JSON.stringify(data.session));
-      router.push("/dashboard");
+      const redirect = searchParams.get("redirect") || "/dashboard";
+      router.push(redirect);
     } catch (err) {
       setError("An error occurred. Please try again.");
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
+
+  // Show loading while checking session
+  if (checkingSession) {
+    return (
+      <div className="min-h-screen bg-cyber-bg cyber-grid flex items-center justify-center p-4">
+        <div className="text-center">
+          <div className="w-16 h-16 rounded-xl gradient-primary flex items-center justify-center mx-auto mb-4">
+            <Shield className="w-8 h-8 text-white" />
+          </div>
+          <Loader2 className="w-8 h-8 animate-spin text-cyber-primary mx-auto mb-2" />
+          <p className="text-cyber-text-muted">Checking session...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-cyber-bg cyber-grid flex items-center justify-center p-4">
@@ -126,5 +191,19 @@ export default function LoginPage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-cyber-bg flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-cyber-primary" />
+        </div>
+      }
+    >
+      <LoginForm />
+    </Suspense>
   );
 }
