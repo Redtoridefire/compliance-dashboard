@@ -18,6 +18,19 @@ function getSeedFrameworks() {
   }));
 }
 
+// Deduplicate frameworks by abbreviation (keep first occurrence)
+function deduplicateFrameworks<T extends { abbreviation: string }>(frameworks: T[]): T[] {
+  const seen = new Set<string>();
+  return frameworks.filter((f) => {
+    const key = f.abbreviation.toLowerCase();
+    if (seen.has(key)) {
+      return false;
+    }
+    seen.add(key);
+    return true;
+  });
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -26,6 +39,7 @@ export async function GET(request: NextRequest) {
     const organizationId = searchParams.get("organizationId");
 
     let frameworks;
+    let useDbFrameworks = false;
 
     // Try to fetch from Supabase if configured (call as function for runtime check)
     if (isSupabaseConfigured()) {
@@ -48,6 +62,7 @@ export async function GET(request: NextRequest) {
 
       if (!error && data && data.length > 0) {
         frameworks = data;
+        useDbFrameworks = true;
       }
     }
 
@@ -59,7 +74,7 @@ export async function GET(request: NextRequest) {
       if (industry) {
         frameworks = frameworks.filter((f) =>
           f.applicable_industries.some(
-            (ind) => ind.toLowerCase().includes(industry.toLowerCase()) ||
+            (ind: string) => ind.toLowerCase().includes(industry.toLowerCase()) ||
                     industry.toLowerCase().includes(ind.toLowerCase())
           )
         );
@@ -72,6 +87,9 @@ export async function GET(request: NextRequest) {
       }
     }
 
+    // Deduplicate frameworks by abbreviation to prevent duplicates
+    frameworks = deduplicateFrameworks(frameworks);
+
     // If organizationId provided, also fetch selected frameworks
     if (organizationId && isSupabaseConfigured()) {
       const supabase = createServerClient();
@@ -80,6 +98,7 @@ export async function GET(request: NextRequest) {
         .select("framework_id, compliance_status")
         .eq("organization_id", organizationId);
 
+      // Create sets for both ID and abbreviation-based matching
       const selectedIds = new Set(
         selectedFrameworks?.map((sf) => sf.framework_id) || []
       );
@@ -87,11 +106,38 @@ export async function GET(request: NextRequest) {
         selectedFrameworks?.map((sf) => [sf.framework_id, sf.compliance_status]) || []
       );
 
-      const frameworksWithSelection = frameworks?.map((f) => ({
-        ...f,
-        isSelected: selectedIds.has(f.id),
-        complianceStatus: statusMap.get(f.id) || null,
-      }));
+      // If using DB frameworks, also try to match by looking up abbreviations
+      // This handles cases where organization_frameworks has different ID formats
+      let abbreviationToSelectedId = new Map<string, string>();
+      if (useDbFrameworks && selectedFrameworks && selectedFrameworks.length > 0) {
+        // Get the full framework info for selected frameworks to get abbreviations
+        const { data: selectedFrameworkDetails } = await supabase
+          .from("frameworks")
+          .select("id, abbreviation")
+          .in("id", Array.from(selectedIds));
+
+        selectedFrameworkDetails?.forEach((sf) => {
+          abbreviationToSelectedId.set(sf.abbreviation.toLowerCase(), sf.id);
+        });
+      }
+
+      const frameworksWithSelection = frameworks?.map((f) => {
+        // Check if selected by ID or by abbreviation match
+        const isSelectedById = selectedIds.has(f.id);
+        const matchedId = abbreviationToSelectedId.get(f.abbreviation.toLowerCase());
+        const isSelectedByAbbr = matchedId ? selectedIds.has(matchedId) : false;
+        const isSelected = isSelectedById || isSelectedByAbbr;
+
+        // Get compliance status from either the direct ID or the matched ID
+        const complianceStatus = statusMap.get(f.id) ||
+          (matchedId ? statusMap.get(matchedId) : null);
+
+        return {
+          ...f,
+          isSelected,
+          complianceStatus,
+        };
+      });
 
       return NextResponse.json({ frameworks: frameworksWithSelection });
     }
@@ -102,7 +148,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error("Frameworks API error:", error);
     // Return seed data as fallback on any error
-    return NextResponse.json({ frameworks: getSeedFrameworks() });
+    return NextResponse.json({ frameworks: deduplicateFrameworks(getSeedFrameworks()) });
   }
 }
 

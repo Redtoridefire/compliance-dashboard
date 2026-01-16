@@ -84,7 +84,7 @@ export default function ControlsPage() {
     setIsLoading(false);
   };
 
-  const updateImplementation = async (controlId: string, status: string) => {
+  const updateImplementation = async (controlId: string, controlNumber: string, status: string) => {
     if (!session?.organizationId) return;
 
     setIsSaving(true);
@@ -95,6 +95,7 @@ export default function ControlsPage() {
         body: JSON.stringify({
           organizationId: session.organizationId,
           controlId,
+          controlNumber, // Human-readable control ID like "500.02(a)"
           implementationStatus: status,
           implementationNotes,
         }),
@@ -329,7 +330,7 @@ export default function ControlsPage() {
             <div className="flex gap-2">
               <Button
                 variant={selectedControl?.implementation?.implementation_status === "Fully Implemented" ? "default" : "outline"}
-                onClick={() => selectedControl && updateImplementation(selectedControl.id, "Fully Implemented")}
+                onClick={() => selectedControl && updateImplementation(selectedControl.id, selectedControl.control_id, "Fully Implemented")}
                 disabled={isSaving}
                 className="flex-1"
               >
@@ -338,7 +339,7 @@ export default function ControlsPage() {
               </Button>
               <Button
                 variant={selectedControl?.implementation?.implementation_status === "Partially Implemented" ? "default" : "outline"}
-                onClick={() => selectedControl && updateImplementation(selectedControl.id, "Partially Implemented")}
+                onClick={() => selectedControl && updateImplementation(selectedControl.id, selectedControl.control_id, "Partially Implemented")}
                 disabled={isSaving}
                 className="flex-1"
               >
@@ -347,7 +348,7 @@ export default function ControlsPage() {
               </Button>
               <Button
                 variant="outline"
-                onClick={() => selectedControl && updateImplementation(selectedControl.id, "Not Implemented")}
+                onClick={() => selectedControl && updateImplementation(selectedControl.id, selectedControl.control_id, "Not Implemented")}
                 disabled={isSaving}
                 className="flex-1"
               >

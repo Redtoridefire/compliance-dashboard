@@ -36,12 +36,15 @@ import {
   Info,
   Loader2
 } from "lucide-react";
+import { getSession } from "@/lib/auth";
 
 interface Framework {
   id: string;
   name: string;
   short_name: string;
+  abbreviation: string;
   version: string;
+  isSelected?: boolean;
 }
 
 interface Control {
@@ -66,6 +69,7 @@ interface Mapping {
 
 export default function MappingPage() {
   const [frameworks, setFrameworks] = useState<Framework[]>([]);
+  const [selectedFrameworks, setSelectedFrameworks] = useState<Framework[]>([]);
   const [controls, setControls] = useState<Control[]>([]);
   const [mappings, setMappings] = useState<Mapping[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -74,26 +78,34 @@ export default function MappingPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [mappingTypeFilter, setMappingTypeFilter] = useState<string>("all");
   const [selectedMapping, setSelectedMapping] = useState<Mapping | null>(null);
+  const [session, setSession] = useState<any>(null);
 
   useEffect(() => {
-    fetchData();
+    const currentSession = getSession();
+    setSession(currentSession);
+    if (currentSession) {
+      fetchData(currentSession.organizationId);
+    }
   }, []);
 
-  const fetchData = async () => {
+  const fetchData = async (organizationId: string) => {
     setIsLoading(true);
     try {
-      // Fetch frameworks
-      const frameworksRes = await fetch("/api/frameworks");
+      // Fetch frameworks with organization context
+      const frameworksRes = await fetch(`/api/frameworks?organizationId=${organizationId}`);
       const frameworksData = await frameworksRes.json();
-      setFrameworks(frameworksData.frameworks || []);
+      const allFrameworks = frameworksData.frameworks || [];
+      setFrameworks(allFrameworks);
+      // Filter to only selected frameworks for mapping
+      setSelectedFrameworks(allFrameworks.filter((f: Framework) => f.isSelected));
 
-      // Fetch controls
-      const controlsRes = await fetch("/api/controls");
+      // Fetch controls for this organization (already filtered by selected frameworks)
+      const controlsRes = await fetch(`/api/controls?organizationId=${organizationId}`);
       const controlsData = await controlsRes.json();
       setControls(controlsData.controls || []);
 
       // Fetch mappings
-      const mappingsRes = await fetch("/api/mappings");
+      const mappingsRes = await fetch(`/api/mappings?organizationId=${organizationId}`);
       const mappingsData = await mappingsRes.json();
       setMappings(mappingsData.mappings || []);
     } catch (error) {
@@ -170,6 +182,32 @@ export default function MappingPage() {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <Loader2 className="w-8 h-8 animate-spin text-cyber-primary" />
+      </div>
+    );
+  }
+
+  // Show message if no frameworks are selected
+  if (selectedFrameworks.length === 0) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-3xl font-bold">Control Mapping Matrix</h1>
+          <p className="text-cyber-text-muted mt-1">
+            Explore how controls map across different compliance frameworks
+          </p>
+        </div>
+        <Card className="border-cyber-border bg-cyber-surface">
+          <CardContent className="py-12 text-center">
+            <ArrowRightLeft className="w-12 h-12 text-cyber-text-dim mx-auto mb-4" />
+            <p className="text-lg font-medium text-cyber-text mb-2">No Frameworks Selected</p>
+            <p className="text-cyber-text-muted mb-4">
+              Please select at least one framework to view control mappings.
+            </p>
+            <Button onClick={() => window.location.href = "/dashboard/frameworks"}>
+              Select Frameworks
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }
@@ -271,8 +309,8 @@ export default function MappingPage() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Sources</SelectItem>
-                {frameworks.map(fw => (
-                  <SelectItem key={fw.id} value={fw.id}>{fw.short_name}</SelectItem>
+                {selectedFrameworks.map(fw => (
+                  <SelectItem key={fw.id} value={fw.id}>{fw.abbreviation || fw.short_name}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -283,8 +321,8 @@ export default function MappingPage() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Targets</SelectItem>
-                {frameworks.map(fw => (
-                  <SelectItem key={fw.id} value={fw.id}>{fw.short_name}</SelectItem>
+                {selectedFrameworks.map(fw => (
+                  <SelectItem key={fw.id} value={fw.id}>{fw.abbreviation || fw.short_name}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -361,7 +399,7 @@ export default function MappingPage() {
                     </TableCell>
                     <TableCell>
                       <Badge variant="outline" className="font-mono">
-                        {sourceFramework?.short_name}
+                        {sourceFramework?.abbreviation || sourceFramework?.short_name}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-center">
@@ -379,7 +417,7 @@ export default function MappingPage() {
                     </TableCell>
                     <TableCell>
                       <Badge variant="outline" className="font-mono">
-                        {targetFrameworkObj?.short_name}
+                        {targetFrameworkObj?.abbreviation || targetFrameworkObj?.short_name}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-center">
@@ -453,7 +491,7 @@ export default function MappingPage() {
                       <CardTitle className="text-sm text-cyber-text-muted">Target Control</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <Badge variant="outline" className="mb-2">{targetFrameworkObj?.short_name}</Badge>
+                      <Badge variant="outline" className="mb-2">{targetFrameworkObj?.abbreviation || targetFrameworkObj?.short_name}</Badge>
                       <p className="font-mono text-cyber-secondary font-semibold">
                         {targetControl?.control_id}
                       </p>

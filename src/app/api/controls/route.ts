@@ -104,19 +104,27 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // Create implementation map
+    // Create implementation map - use multiple keys for matching
+    // Key by both control_id (the UUID/seed ID) and control_number (human-readable like "500.02(a)")
     type Implementation = (typeof implementations)[number];
-    const implementationMap: Record<string, Implementation> = {};
+    const implementationMapById: Record<string, Implementation> = {};
+    const implementationMapByNumber: Record<string, Implementation> = {};
     implementations?.forEach((impl) => {
       if (impl.control_id) {
-        implementationMap[impl.control_id] = impl;
+        implementationMapById[impl.control_id] = impl;
+      }
+      // If implementation has control_number stored, also map by that
+      if (impl.control_number) {
+        implementationMapByNumber[impl.control_number] = impl;
       }
     });
 
-    // Combine controls with implementations
+    // Combine controls with implementations - try ID first, then human-readable control_id
     const controlsWithImplementation = controls?.map((control) => ({
       ...control,
-      implementation: implementationMap[control.id] || null,
+      implementation: implementationMapById[control.id] ||
+                      implementationMapByNumber[control.control_id] ||
+                      null,
     }));
 
     // Get unique control families

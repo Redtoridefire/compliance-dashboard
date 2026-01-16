@@ -7,6 +7,7 @@ export async function POST(request: NextRequest) {
     const {
       organizationId,
       controlId,
+      controlNumber, // Human-readable control ID like "500.02(a)"
       implementationStatus,
       implementationNotes,
       evidenceUrls,
@@ -33,14 +34,19 @@ export async function POST(request: NextRequest) {
 
       if (existing) {
         // Update existing implementation
+        const updateData: Record<string, unknown> = {
+          implementation_status: implementationStatus,
+          implementation_notes: implementationNotes,
+          evidence_urls: evidenceUrls || [],
+          updated_at: new Date().toISOString(),
+        };
+        // Also update control_number if provided (for better matching later)
+        if (controlNumber) {
+          updateData.control_number = controlNumber;
+        }
         const { data, error } = await supabase
           .from("control_implementations")
-          .update({
-            implementation_status: implementationStatus,
-            implementation_notes: implementationNotes,
-            evidence_urls: evidenceUrls || [],
-            updated_at: new Date().toISOString(),
-          })
+          .update(updateData)
           .eq("id", existing.id)
           .select()
           .single();
@@ -52,15 +58,20 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ implementation: data });
       } else {
         // Create new implementation
+        const insertData: Record<string, unknown> = {
+          organization_id: organizationId,
+          control_id: controlId,
+          implementation_status: implementationStatus,
+          implementation_notes: implementationNotes,
+          evidence_urls: evidenceUrls || [],
+        };
+        // Include control_number if provided (for better matching later)
+        if (controlNumber) {
+          insertData.control_number = controlNumber;
+        }
         const { data, error } = await supabase
           .from("control_implementations")
-          .insert({
-            organization_id: organizationId,
-            control_id: controlId,
-            implementation_status: implementationStatus,
-            implementation_notes: implementationNotes,
-            evidence_urls: evidenceUrls || [],
-          })
+          .insert(insertData)
           .select()
           .single();
 
