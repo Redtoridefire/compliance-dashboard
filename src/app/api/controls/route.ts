@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
     const controlFamily = searchParams.get("controlFamily");
 
     let controls;
-    let implementations: Array<{ control_id: string; implementation_status: string; implementation_notes?: string }> = [];
+    let implementations: Array<{ control_id: string; implementation_status: string; implementation_notes?: string; control_number?: string }> = [];
 
     // Try to fetch from Supabase if configured (call as function for runtime check)
     if (isSupabaseConfigured() && organizationId) {
